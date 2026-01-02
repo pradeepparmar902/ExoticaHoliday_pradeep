@@ -764,6 +764,88 @@
     text-transform: uppercase !important;
 }
 
+
+@media (max-width: 768px) {
+    .inner-container {
+        flex-direction: column !important;
+        padding: 1rem;
+    }
+
+    .inner-left,
+    .inner-right {
+        width: 100% !important;
+        max-width: none !important;
+    }
+
+    /* Make hero shorter on mobile */
+    .inner-left {
+        min-height: 400px !important;
+        padding: 2rem 1.5rem;
+    }
+
+    /* Form fields full width, stacked */
+    .form-row {
+        flex-direction: column !important;
+        gap: 1rem;
+    }
+
+    .form-row > * {
+        width: 100% !important;
+        flex: none !important;
+    }
+
+    /* Last row (textarea + button) stack */
+    .last-row {
+        flex-direction: column !important;
+    }
+
+    .last-row textarea {
+        width: 100% !important;
+        margin-bottom: 1rem;
+    }
+
+    .last-row button {
+        width: 100% !important;
+    }
+
+    /* Tabs wrap and center */
+    .booking-tabs {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .tab-btn {
+        flex: 1 1 45%;
+        padding: 0.8rem;
+        font-size: 0.95rem;
+    }
+
+    input, select, textarea {
+        font-size: 1rem;
+    }
+
+    .nav-container {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .logo {
+        margin-bottom: 0.5rem;
+    }
+
+    /* NEW: Hero on top, booking form below */
+    .inner-left {
+        order: 1; /* Hero comes first (top) */
+    }
+
+    .inner-right {
+        order: 2; /* Form comes second (below hero) */
+        margin-top: 1rem; /* Optional: small gap */
+    }
+}
+
 </style>
 </head>
 <body>
