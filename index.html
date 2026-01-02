@@ -106,10 +106,14 @@
         min-width: 200px;
     }
 
+    /* ============================= */
+    /* PACKAGES GRID - RESPONSIVE    */
+    /* ============================= */
     .packages-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 2rem;
+        padding: 1rem 0;
     }
 
     .flip-card {
@@ -332,7 +336,7 @@
         overflow: hidden; 
         border-radius: 16px; 
         box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        min-height: 400px; /* Restored full height on desktop */
+        min-height: 600px;
         padding: 6rem 2.5rem;
     }
 
@@ -454,7 +458,7 @@
         box-shadow: 0 6px 20px rgba(255, 77, 77, 0.4);
     }
 
-    /* Tab panes - Only one form visible */
+    /* Only one form visible */
     .tab-pane {
         display: none;
     }
@@ -564,10 +568,23 @@
     }
 
     /* ============================= */
-    /* MOBILE RESPONSIVENESS ONLY    */
+    /* RESPONSIVE BREAKPOINTS        */
     /* ============================= */
 
+    @media (max-width: 1200px) {
+        .packages-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 992px) {
+        .packages-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
     @media (max-width: 768px) {
+        /* Stack hero and form */
         .inner-container {
             flex-direction: column !important;
             padding: 1rem;
@@ -579,9 +596,8 @@
             max-width: none !important;
         }
 
-        /* Reduce hero height only on mobile */
         .inner-left {
-            min-height: 400px !important; /* Shorter on mobile, full on desktop */
+            min-height: 400px !important;
             padding: 2rem 1.5rem;
         }
 
@@ -633,52 +649,40 @@
             margin-bottom: 0.5rem;
         }
 
+        /* Packages: 1 column on mobile */
         .packages-grid {
             grid-template-columns: 1fr;
+            gap: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .flip-card {
+            height: auto;
+            max-width: 380px;
+            margin: 0 auto;
+        }
+
+        .flip-card-inner {
+            height: auto;
+        }
+
+        .package-img {
+            height: 200px;
+        }
+
+        .package-content {
+            padding: 1.2rem;
+        }
+
+        .package-content h3 {
+            font-size: 1.4rem;
+        }
+
+        .price {
+            font-size: 1.6rem;
         }
     }
-
-    @media (max-width: 1200px) {
-        .packages-grid { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    @media (max-width: 992px) {
-        .packages-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    .packages-grid {
-        grid-template-columns: 1fr !important;
-        gap: 1.5rem;
-    }
-
-    .flip-card {
-        height: auto;
-        max-width: 350px;
-        margin: 0 auto;
-    }
-
-    .flip-card-inner {
-        height: auto;
-    }
-
-    .package-img {
-        height: 200px;
-    }
-
-    .package-content {
-        padding: 1.2rem;
-    }
-
-    .package-content h3 {
-        font-size: 1.4rem;
-    }
-
-    .price {
-        font-size: 1.6rem;
-    }
-
 </style>
-
 </head>
 <body>
 
