@@ -645,7 +645,7 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Mobile packages - single column, visible */
+        /* FIXED MOBILE PACKAGES - NOW VISIBLE */
         .packages-grid {
             grid-template-columns: 1fr;
             gap: 1.5rem;
@@ -653,17 +653,24 @@
         }
 
         .flip-card {
-            height: auto !important;
+            height: auto;
             max-width: 380px;
             margin: 0 auto;
         }
 
         .flip-card-inner {
-            height: auto !important;
+            height: 100%;
+            min-height: 440px; /* Ensures visibility even before images load */
+            border-radius: 16px;
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            border-radius: 16px;
         }
 
         .package-img {
-            height: 200px;
+            height: 220px;
         }
 
         .package-content {
@@ -679,7 +686,6 @@
         }
     }
 </style>
-
 </head>
 <body>
 
