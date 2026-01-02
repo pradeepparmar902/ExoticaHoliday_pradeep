@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Exotica Holiday - Adventure Tours for Youth 🔥</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
 <style>
     :root {
         --primary: #ff4d4d;
@@ -107,45 +106,44 @@
     }
 
     /* ============================= */
-    /* PACKAGES GRID - RESPONSIVE    */
+    /* PACKAGES GRID & FLIP CARDS    */
     /* ============================= */
-    /* Packages Grid - Responsive */
-.packages-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    padding: 1rem 0;
-}
+    .packages-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+        padding: 1rem 0;
+    }
 
-.flip-card {
-    background-color: transparent;
-    perspective: 1200px;
-    height: 480px; /* Fixed height for desktop */
-    cursor: pointer;
-    position: relative;
-    transition: all 0.4s ease;
-}
+    .flip-card {
+        background-color: transparent;
+        perspective: 1200px;
+        height: 480px;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.4s ease;
+    }
 
-.flip-card:hover {
-    transform: translateY(-15px) scale(1.03);
-    box-shadow: 0 25px 60px rgba(255, 77, 77, 0.4);
-}
+    .flip-card:hover {
+        transform: translateY(-15px) scale(1.03);
+        box-shadow: 0 25px 60px rgba(255, 77, 77, 0.4);
+    }
 
-.flip-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transform-style: preserve-3d;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-    border-radius: 20px;
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-}
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        transform-style: preserve-3d;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        border-radius: 20px;
+        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    }
 
-.flip-card-inner.flipped {
-    transform: rotateY(180deg) scale(1.02);
-}
+    .flip-card-inner.flipped {
+        transform: rotateY(180deg) scale(1.02);
+    }
 
     .flip-card-front, .flip-card-back {
         position: absolute;
@@ -257,61 +255,9 @@
         background: #cc0000; 
     }
 
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1001;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.6);
-        padding-top: 60px;
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 2rem;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 700px;
-        border-radius: 10px;
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .close:hover { 
-        color: black; 
-    }
-
-    .modal h2 {
-        color: var(--primary);
-        margin-bottom: 1rem;
-    }
-
-    footer {
-        background: var(--dark);
-        color: white;
-        text-align: center;
-        padding: 3rem 1rem;
-    }
-
-    footer p { 
-        margin: 1rem 0; 
-    }
-
     /* ============================= */
-    /* DESKTOP LAYOUT (UNCHANGED)    */
+    /* HERO & BOOKING SECTION        */
     /* ============================= */
-
     .blank-section {
         border: 3px solid var(--primary);
         border-radius: 16px;
@@ -459,7 +405,6 @@
         box-shadow: 0 6px 20px rgba(255, 77, 77, 0.4);
     }
 
-    /* Only one form visible */
     .tab-pane {
         display: none;
     }
@@ -468,7 +413,6 @@
         display: block !important;
     }
 
-    /* Hero styles */
     .hero-slide {
         position: absolute;
         top: 0;
@@ -568,8 +512,59 @@
         box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     }
 
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1001;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.6);
+        padding-top: 60px;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 2rem;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 700px;
+        border-radius: 10px;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover { 
+        color: black; 
+    }
+
+    .modal h2 {
+        color: var(--primary);
+        margin-bottom: 1rem;
+    }
+
+    footer {
+        background: var(--dark);
+        color: white;
+        text-align: center;
+        padding: 3rem 1rem;
+    }
+
+    footer p { 
+        margin: 1rem 0; 
+    }
+
     /* ============================= */
-    /* RESPONSIVE BREAKPOINTS        */
+    /* RESPONSIVE MEDIA QUERIES      */
     /* ============================= */
 
     @media (max-width: 1200px) {
@@ -585,7 +580,6 @@
     }
 
     @media (max-width: 768px) {
-        /* Stack hero and form */
         .inner-container {
             flex-direction: column !important;
             padding: 1rem;
@@ -650,40 +644,38 @@
             margin-bottom: 0.5rem;
         }
 
-          /* Mobile: 1 column + flexible height */
+        /* Mobile packages - single column, visible */
+        .packages-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            padding: 0 1rem;
+        }
 
-    .packages-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-        padding: 0 1rem;
-    }
+        .flip-card {
+            height: auto !important;
+            max-width: 380px;
+            margin: 0 auto;
+        }
 
-    .flip-card {
-        height: auto !important; /* Override fixed height on mobile */
-        max-width: 380px;
-        margin: 0 auto; /* Center the card */
-    }
+        .flip-card-inner {
+            height: auto !important;
+        }
 
-    .flip-card-inner {
-        height: auto !important;
-    }
+        .package-img {
+            height: 200px;
+        }
 
-    .package-img {
-        height: 200px;
-    }
+        .package-content {
+            padding: 1.2rem;
+        }
 
-    .package-content {
-        padding: 1.2rem;
-    }
+        .package-content h3 {
+            font-size: 1.4rem;
+        }
 
-    .package-content h3 {
-        font-size: 1.4rem;
-    }
-
-    .price {
-        font-size: 1.6rem;
-    }
-
+        .price {
+            font-size: 1.6rem;
+        }
     }
 </style>
 </head>
