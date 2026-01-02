@@ -262,7 +262,7 @@
     .blank-section {
         border: 3px solid var(--primary);
         border-radius: 16px;
-        min-height: 600px;
+        min-height: 300px;
         margin: 0 auto 4rem auto;
         max-width: 1800px;
         background: transparent;
@@ -284,7 +284,7 @@
         overflow: hidden; 
         border-radius: 16px; 
         box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        min-height: 600px;
+        min-height: 400px;
         padding: 6rem 2.5rem;
     }
 
@@ -423,6 +423,7 @@
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.8s ease-in-out;
+        background: var(--dark); /* As a safety net */
     }
 
     .hero-slide.active {
@@ -441,6 +442,8 @@
         background-repeat: no-repeat;
         filter: brightness(0.7);
         z-index: 0;
+        background-color: #001f3f; /* Dark fallback, or use a gradient */
+    background: linear-gradient(135deg, #ff4d4d, #ff6b35); /* Or your brand colors */
     }
 
     .hero-content {
@@ -685,6 +688,38 @@
             font-size: 1.6rem;
         }
     }
+@media (max-width: 768px) {
+    /* Drastically reduce hero height on mobile so packages appear quickly */
+    .blank-section {
+        min-height: auto !important;   /* Remove forced tall height */
+        margin-bottom: 2rem;
+        border-width: 2px;             /* Optional: thinner border on mobile */
+    }
+
+    .inner-left {
+        min-height: 280px !important;  /* Short enough to fit screen */
+        padding: 2rem 1rem;
+    }
+
+    /* Make text visible even if Firebase slow */
+    .hero-content h1 {
+        font-size: 2rem;
+        color: white !important;       /* Force visible text */
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+        color: white !important;
+        opacity: 1 !important;
+    }
+
+    /* Strong colorful fallback for hero (shows immediately) */
+    .hero-backdrop {
+        background: linear-gradient(135deg, rgba(255, 77, 77, 0.9), rgba(255, 107, 53, 0.9)) !important;
+        filter: brightness(0.8);
+    }
+}
 </style>
 </head>
 <body>
