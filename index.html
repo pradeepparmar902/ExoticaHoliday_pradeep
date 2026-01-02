@@ -265,17 +265,18 @@
     margin: 0 auto 4rem auto;
     max-width: 1800px;
     background: transparent;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    padding: 0;
 }
 
 .inner-container {
     display: flex;
-    flex-direction: column; /* Stack on mobile */
     height: 100%;
     gap: 2rem;
-    padding: 1rem;
+    padding: 2rem;
 }
+
 /* Left Section with Hero Backdrop */
 /* Ensure left section contains all heroes */
 .inner-left {
@@ -283,9 +284,8 @@
     overflow: hidden;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    min-height: 400px; /* Shorter on mobile */
-    padding: 2rem 1rem;
-    flex: 1;
+    min-height: 100%;
+    padding: 6rem 2.5rem; /* Top/bottom 6rem, left/right 2.5rem */
 }
 
 /* All hero slides are inside, only active one visible */
@@ -404,24 +404,27 @@
     }
 }
 
-.inner-right {
-    flex: 1;
-    padding: 1rem;
-}
-/* Make booking tabs stack on mobile */
+.inner-left { flex: 1.2; } /* Slightly wider left */
+.inner-right { flex: 0.8; } /* Slightly narrower right */
+
+/* Booking Tabs & Form Styles */
 .booking-tabs {
     display: flex;
-    flex-wrap: wrap; /* Allow tabs to wrap */
     gap: 0.5rem;
     margin-bottom: 1.5rem;
     border-bottom: 2px solid #eee;
-    justify-content: center;
 }
 
 .tab-btn {
-    flex: 1 1 auto;
-    padding: 0.8rem 1rem;
-    font-size: 1rem;
+    flex: 1;
+    padding: 1rem;
+    background: transparent;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.3s;
+    position: relative;
 }
 
 .tab-btn.active {
@@ -554,15 +557,23 @@
 /* Form Rows */
 .form-row {
     display: flex;
-    flex-direction: column; /* Stack fields on mobile */
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 /* Input & Select Fields */
 .form-row input,
 .form-row select,
 .form-row textarea {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
+    padding: 0.9rem 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .form-row input:focus,
@@ -622,8 +633,18 @@
 }
 
 /* Button stays compact and aligned */
-.last-row button.last-row button {
-    width: 100%;
+.last-row button {
+    background: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 160px; /* Fixed width so it doesn't stretch */
+    height: fit-content; /* Button height matches textarea top */
+    align-self: flex-start; /* Aligns button to top of textarea */
 }
 
 /* Hover effect */
@@ -634,30 +655,11 @@
 }
 
 /* Responsive: Stack on mobile */
-@media (min-width: 768px) {
-    .inner-container {
-        flex-direction: row; /* Side-by-side on desktop */
-    }
-    
-    .form-row {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-
+@media (max-width: 768px) {
     .last-row {
-        flex-direction: row;
-        align-items: flex-start;
+        flex-direction: column; /* Stack on small screens */
+        gap: 1rem;
     }
-
-    .last-row textarea {
-        flex: 3;
-    }
-
-    .last-row button {
-        flex: 1;
-        max-width: 200px;
-    }
-    
     .last-row button {
         width: 100%; /* Button full width on mobile */
         align-self: center;
