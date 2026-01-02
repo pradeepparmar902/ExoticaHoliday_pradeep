@@ -645,6 +645,38 @@
     @media (max-width: 992px) {
         .packages-grid { grid-template-columns: repeat(2, 1fr); }
     }
+
+    .packages-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem;
+    }
+
+    .flip-card {
+        height: auto;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+
+    .flip-card-inner {
+        height: auto;
+    }
+
+    .package-img {
+        height: 200px;
+    }
+
+    .package-content {
+        padding: 1.2rem;
+    }
+
+    .package-content h3 {
+        font-size: 1.4rem;
+    }
+
+    .price {
+        font-size: 1.6rem;
+    }
+
 </style>
 
 </head>
@@ -1519,4 +1551,3 @@ function loadHeroContent(tab) {
 
 
 </html>
-
