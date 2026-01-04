@@ -125,7 +125,7 @@
             </div>
 
             <!-- Right: Booking Widget with Your Original Forms -->
-            <div class="w-full max-w-md ml-auto">
+            <div class="w-full max-w-lg ml-auto">
                 <div class="bg-white rounded-[2rem] shadow-soft p-6 lg:p-8 backdrop-blur-xl bg-white/95">
                     <div class="mb-6">
                         <h3 class="text-2xl font-bold text-[#181010]">Book Your Adventure</h3>
@@ -157,16 +157,16 @@
                         <div id="package-tab" class="tab-pane active">
                             <form id="packageBookingForm" class="flex flex-col gap-4">
                                 <h2 class="text-xl font-bold mb-2">Book Your Package</h2>
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                    <input type="text" id="name" name="name" placeholder="Name" class="px-4 py-3 rounded-xl border border-gray-300" required>
-                                    <input type="number" id="persons" name="persons" min="1" placeholder="# of Person" class="px-4 py-3 rounded-xl border border-gray-300" required>
-                                    <input type="tel" id="phone" name="phone" placeholder="Mobile Phone Number" class="px-4 py-3 rounded-xl border border-gray-300" required>
-                                </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                    <select id="package" name="package" class="px-4 py-3 rounded-xl border border-gray-300" required>
+                                <select id="package" name="package" class="px-4 py-3 rounded-xl border border-gray-300" required>
                                         <option value="">Select Package</option>
                                         <!-- Filled by JS -->
                                     </select>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <input type="text" id="name" name="name" placeholder="Name" class="px-4 py-3 rounded-xl border border-gray-300" required>
+                                    <input type="tel" id="phone" name="phone" placeholder="Mobile Phone Number" class="px-4 py-3 rounded-xl border border-gray-300" required>
+                                    <input type="email" id="email" name="email" placeholder="Email Address" class="px-4 py-3 rounded-xl border border-gray-300" required>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     <input type="date" id="travelDate" name="travelDate" class="px-4 py-3 rounded-xl border border-gray-300" required>
                                     <select id="hotelCategory" name="hotelCategory" class="px-4 py-3 rounded-xl border border-gray-300" required>
                                         <option value="">Hotel Category</option>
@@ -176,18 +176,30 @@
                                     </select>
                                 </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <select id="mealType" name="mealType" class="px-4 py-3 rounded-xl border border-gray-300" required>
-                                        <option value="">Meal Type</option>
-                                        <option value="breakfast">Breakfast</option>
-                                        <option value="bfast-lunch-dinner">B.Fast-Lunch-Dinner</option>
-                                        <option value="only-room">Only Hotel Room</option>
-                                    </select>
-                                    <input type="email" id="email" name="email" placeholder="Email Address" class="px-4 py-3 rounded-xl border border-gray-300" required>
+                                   <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2"># of Adults</label>
+                <div class="flex items-center gap-4">
+                    <button type="button" onclick="updateCounter('adults', -1)" class="w-12 h-12 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-xl font-bold transition">-</button>
+                    <input type="number" id="adults" name="adults" value="2" min="1" readonly class="w-20 text-center py-4 rounded-2xl bg-background-light border border-transparent text-lg font-bold">
+                    <button type="button" onclick="updateCounter('adults', 1)" class="w-12 h-12 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-xl font-bold transition">+</button>
+                </div>
+            </div>
+
+            <!-- Children Counter -->
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2"># of Children (0-12 yrs)</label>
+                <div class="flex items-center gap-4">
+                    <button type="button" onclick="updateCounter('children', -1)" class="w-12 h-12 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-xl font-bold transition">-</button>
+                    <input type="number" id="children" name="children" value="0" min="0" readonly class="w-20 text-center py-4 rounded-2xl bg-background-light border border-transparent text-lg font-bold">
+                    <button type="button" onclick="updateCounter('children', 1)" class="w-12 h-12 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-xl font-bold transition">+</button>
+                </div>
+            </div>
+                                    
                                 </div>
                                 <div class="flex flex-col gap-4">
                                     <textarea id="additionalInfo" name="additionalInfo" rows="4" placeholder="Additional Information" class="px-4 py-3 rounded-xl border border-gray-300 resize-none"></textarea>
                                     <button type="submit" class="w-full h-14 bg-primary text-white rounded-full font-bold text-lg hover:bg-red-600 transition-all duration-300 shadow-xl shadow-primary/20">
-                                        Book Now
+                                        Submit Enquiry
                                     </button>
                                 </div>
                             </form>
@@ -287,6 +299,116 @@
         </div>
     </main>
 
+
+    <!-- New Sections After Hero -->
+
+<!-- 1. Fixed Group Tours Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-[1600px] mx-auto px-6 lg:px-16">
+        <h2 class="text-4xl lg:text-5xl font-black text-center mb-12 text-[#181010]">Fixed Group Tours</h2>
+        
+        <!-- Horizontal Scroll Container -->
+        <div class="overflow-x-auto scrollbar-hide">
+            <div id="fixedToursGrid" class="flex gap-8 pb-4" style="min-width: max-content;">
+                <!-- Dynamic cards inserted here by JS -->
+            </div>
+        </div>
+        
+        <!-- Scroll Hint Arrows (Optional) -->
+        <div class="flex justify-center mt-6 gap-8">
+            <span class="text-3xl text-gray-400 cursor-pointer hover:text-primary transition">←</span>
+            <span class="text-3xl text-primary cursor-pointer hover:text-red-600 transition">→</span>
+        </div>
+    </div>
+</section>
+
+<!-- Fixed Group Tour Details Popup -->
+<div id="tourDetailsPopup" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 px-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-8 relative">
+        <!-- Close Button -->
+        <button onclick="closeTourDetailsPopup()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left: Image -->
+            <div>
+                <img id="tourDetailImage" src="" alt="Tour Image" class="w-full h-96 object-cover rounded-2xl">
+            </div>
+
+            <!-- Right: Details -->
+            <div>
+                <h2 id="tourDetailTitle" class="text-4xl font-black mb-4 text-[#181010]"></h2>
+                <p class="text-2xl text-primary font-bold mb-6">₹<span id="tourDetailPrice"></span></p>
+
+                <div class="space-y-4 mb-8">
+                    <p class="flex items-center gap-3 text-lg">
+                        <span class="material-symbols-outlined text-primary">schedule</span>
+                        <strong>Duration:</strong> <span id="tourDetailDuration"></span>
+                    </p>
+                    <p class="flex items-center gap-3 text-lg">
+                        <span class="material-symbols-outlined text-primary">calendar_month</span>
+                        <strong>Departure:</strong> <span id="tourDetailDeparture"></span>
+                    </p>
+                    <p class="flex items-center gap-3 text-lg">
+                        <span class="material-symbols-outlined text-primary">event_seat</span>
+                        <strong>Seats Left:</strong> <span id="tourDetailSeatsLeft" class="text-red-600 font-bold"></span>
+                    </p>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-2xl font-bold mb-4">Tour Itinerary & Details</h3>
+                    <div id="tourDetailDescription" class="text-gray-700 leading-relaxed whitespace-pre-line"></div>
+                </div>
+
+                <button onclick="bookThisFixedTour()" class="w-full h-16 bg-primary text-white rounded-full font-bold text-xl hover:bg-red-600 transition-all shadow-xl shadow-primary/20">
+                    Book This Tour Now
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Select Your Wish Section -->
+<section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-[1600px] mx-auto px-6 lg:px-16">
+        <h2 class="text-4xl lg:text-5xl font-black text-center mb-12 text-[#181010]">Select Your Wish</h2>
+        
+        <!-- Wish Images - Click to Filter Packages -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+            <div class="wish-category cursor-pointer group" data-category="International">
+                <div class="relative overflow-hidden rounded-3xl shadow-xl">
+                    <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="International" class="w-full h-80 object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition"></div>
+                    <h3 class="absolute bottom-6 left-6 text-3xl font-black text-white">International</h3>
+                </div>
+            </div>
+
+            <div class="wish-category cursor-pointer group" data-category="India">
+                <div class="relative overflow-hidden rounded-3xl shadow-xl">
+                    <img src="https://images.unsplash.com/photo-1524492410603-93e3e7a9d389?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Domestic India" class="w-full h-80 object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition"></div>
+                    <h3 class="absolute bottom-6 left-6 text-3xl font-black text-white">Domestic India</h3>
+                </div>
+            </div>
+
+            <div class="wish-category cursor-pointer group" data-category="Hill station">
+                <div class="relative overflow-hidden rounded-3xl shadow-xl">
+                    <img src="https://images.unsplash.com/photo-1578327231330-25c7e29b7c09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hill Station" class="w-full h-80 object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition"></div>
+                    <h3 class="absolute bottom-6 left-6 text-3xl font-black text-white">Hill Station</h3>
+                </div>
+            </div>
+
+            <div class="wish-category cursor-pointer group" data-category="">
+                <div class="relative overflow-hidden rounded-3xl shadow-xl">
+                    <img src="https://images.unsplash.com/photo-1495567107330-31e6f6b8d2e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="All Destinations" class="w-full h-80 object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition"></div>
+                    <h3 class="absolute bottom-6 left-6 text-3xl font-black text-white">View All</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
     <!-- Packages Section -->
     <section id="packages" class="py-20 bg-white">
         <div class="max-w-[1280px] mx-auto px-6 lg:px-10">
@@ -326,242 +448,706 @@
         </div>
     </footer>
 
-    <script>
-        // Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyDdfXeJG76KTsVUIBuAdFQ_uejrImaPQaw",
-            authDomain: "exotica-hoidays.firebaseapp.com",
-            projectId: "exotica-hoidays",
-            storageBucket: "exotica-hoidays.firebasestorage.app",
-            messagingSenderId: "151952804646",
-            appId: "1:151952804646:web:8417305702390c9e538fe7",
-            measurementId: "G-X011TY1K5Y"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+<script>
 
-        let packages = [];
+    
+    // Add this constant at the top of your <script> tag (near other globals)
+const ADMIN_WHATSAPP = '9819984437'; // Replace with your actual admin WhatsApp number (country code without + or 00, e.g., 919876543210 for India)
 
-        function renderPackages(filteredPackages = packages) {
-            const grid = document.getElementById('packagesGrid');
-            grid.innerHTML = '';
 
-            if (filteredPackages.length === 0) {
-                grid.innerHTML = '<p class="text-center col-span-full text-gray-500">No packages found.</p>';
+    // Firebase Config (keep only one)
+    const firebaseConfig = {
+        apiKey: "AIzaSyDdfXeJG76KTsVUIBuAdFQ_uejrImaPQaw",
+        authDomain: "exotica-hoidays.firebaseapp.com",
+        projectId: "exotica-hoidays",
+        storageBucket: "exotica-hoidays.firebasestorage.app",
+        messagingSenderId: "151952804646",
+        appId: "1:151952804646:web:8417305702390c9e538fe7",
+        measurementId: "G-X011TY1K5Y"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Load Fixed Group Tours from Firebase
+    let fixedTours = [];
+
+    // Render Fixed Tours
+    function renderFixedTours(toursList = fixedTours) {
+    const toursGrid = document.getElementById('fixedToursGrid');
+    toursGrid.innerHTML = '';
+
+    if (toursList.length === 0) {
+        toursGrid.innerHTML = '<p class="text-center py-10 text-gray-500">No fixed group tours available yet.</p>';
+        return;
+    }
+
+    toursList.forEach(tour => {
+        const card = document.createElement('div');
+        card.className = 'w-80 flex-shrink-0 bg-white rounded-3xl shadow-xl overflow-hidden';
+
+        card.innerHTML = `
+            <img src="${tour.imageUrl || ''}" alt="${tour.title || 'Tour'}" class="w-full h-96 object-cover">
+            <div class="p-6">
+                <h3 class="text-2xl font-bold mb-2">${tour.title || 'Untitled Tour'}</h3>
+                <p class="text-gray-600 mb-4">${tour.duration || ''} • Starting ₹${tour.price || '0'}</p>
+                <p class="text-sm text-gray-500 mb-4">Departure: ${tour.departure || 'N/A'} • ${tour.seatsLeft || 'N/A'} Seats Left</p>
+                <p class="text-gray-600 mb-6 line-clamp-3">
+                    ${tour.smallDescription || tour.description || 'No short description available.'}
+                </p>
+                <button onclick="openTourDetails('${tour.id}')" class="w-full bg-primary text-white py-3 rounded-xl font-bold hover:bg-red-600 transition">
+                    View Details
+                </button>
+            </div>
+        `;
+
+        toursGrid.appendChild(card);
+    });
+}
+
+    // Single global variable for the selected fixed tour
+    let currentFixedTour = null;
+
+    // Open Tour Details Popup
+    function openTourDetails(tourId) {
+    db.collection('fixedGroupTours').doc(tourId).get()
+        .then(doc => {
+            if (!doc.exists) {
+                alert('Tour not found!');
                 return;
             }
 
-            filteredPackages.forEach(pkg => {
-                const card = document.createElement('div');
-                card.className = 'flip-card';
-                card.dataset.package = pkg.dataPackage || pkg.id;
+            const tour = doc.data();
+            tour.id = tourId;
 
-               card.innerHTML = `
-    <div class="group h-[480px] w-full [perspective:1200px]">
-        <div class="relative h-full w-full rounded-2xl shadow-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] bg-white">
-            <!-- Front Side -->
-            <div class="absolute inset-0 h-full w-full rounded-2xl [backface-visibility:hidden] flex flex-col overflow-hidden">
-                <div class="h-56 bg-cover bg-center" style="background-image: url('${pkg.imageUrl || ''}')"></div>
-                <div class="flex-1 p-6 flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-2xl font-bold text-[#181010] mb-3">${pkg.title || 'Untitled Package'}</h3>
-                        <div class="flex items-center gap-3 mb-4">
-                            ${pkg.saleText ? `<span class="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">${pkg.saleText}</span>` : ''}
-                            <span class="text-3xl font-black text-primary">₹${pkg.price || '0'}</span>
-                            ${pkg.oldPrice ? `<span class="text-lg text-gray-500 line-through">₹${pkg.oldPrice}</span>` : ''}
-                        </div>
-                        <p class="text-gray-600 mb-4 line-clamp-3">${pkg.description || ''}</p>
-                        <p class="text-sm font-medium text-gray-500">
-                            <span class="font-bold text-[#181010]">${pkg.location || ''}</span> • ${pkg.duration || ''}
-                        </p>
-                    </div>
-                    <button class="w-full mt-6 bg-primary text-white py-4 rounded-xl font-bold hover:bg-red-600 transition-all duration-300 shadow-lg hover:shadow-primary/30">
-                        View Details
-                    </button>
-                </div>
-            </div>
+            currentFixedTour = tour;
 
-            <!-- Back Side -->
-            <div class="absolute inset-0 h-full w-full rounded-2xl bg-gradient-to-br from-blue-900 to-primary text-white [backface-visibility:hidden] [transform:rotateY(180deg)] p-8 flex flex-col justify-center items-center text-center">
-                <h3 class="text-3xl font-black mb-8">${pkg.title || 'Untitled'}</h3>
-                <ul class="space-y-6 mb-10 text-lg">
-                    <li class="flex items-center justify-center gap-4">
-                        <span class="material-symbols-outlined text-2xl">location_on</span>
-                        <span>${pkg.location || ''}</span>
-                    </li>
-                    <li class="flex items-center justify-center gap-4">
-                        <span class="material-symbols-outlined text-2xl">calendar_today</span>
-                        <span>${pkg.duration || ''}</span>
-                    </li>
-                </ul>
-                <div class="space-y-4 w-full max-w-xs">
-                    <a href="contact.html?package=${encodeURIComponent(pkg.dataPackage || pkg.id)}" class="block w-full bg-white text-primary py-4 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 shadow-lg">
-                        Book Now
-                    </a>
-                    <button class="more-details w-full border-2 border-white text-white py-4 rounded-xl font-bold hover:bg-white/20 transition-all duration-300">
-                        More Details
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-              `;
-                grid.appendChild(card);
-            });
+            document.getElementById('tourDetailImage').src = tour.imageUrl || '';
+            document.getElementById('tourDetailTitle').textContent = tour.title || 'Tour';
+            document.getElementById('tourDetailPrice').textContent = tour.price || '0';
+            document.getElementById('tourDetailDuration').textContent = tour.duration || 'N/A';
+            document.getElementById('tourDetailDeparture').textContent = tour.departure || 'N/A';
+            document.getElementById('tourDetailSeatsLeft').textContent = tour.seatsLeft || 'N/A';
 
-            attachFlipCardListeners();
-        }
+            // Use bigDescription for the full popup description
+            document.getElementById('tourDetailDescription').textContent = 
+                tour.bigDescription || tour.description || 'No detailed description available.';
 
-        function attachFlipCardListeners() {
-            document.querySelectorAll('.flip-card').forEach(card => {
-                const inner = card.querySelector('.flip-card-inner');
-
-                card.addEventListener('click', e => {
-                    if (e.target.closest('.more-details')) {
-                        e.stopPropagation();
-                        const pkg = packages.find(p => (p.dataPackage || p.id) === card.dataset.package);
-                        if (pkg) {
-                            document.getElementById('modalTitle').textContent = pkg.title || 'Package Details';
-                            document.getElementById('modalDescription').innerHTML = pkg.moreDetails || pkg.description || 'No additional details available.';
-                            document.getElementById('detailsModal').classList.remove('hidden');
-                        }
-                        return;
-                    }
-                    inner.classList.toggle('flipped');
-                });
-            });
-        }
-
-        // Load packages from Firebase
-        document.addEventListener('DOMContentLoaded', () => {
-    const grid = document.getElementById('packagesGrid');
-    grid.innerHTML = '<p class="text-center col-span-full py-10">Loading packages...</p>';
-
-    db.collection('packages').get()
-        .then(snapshot => {
-            grid.innerHTML = '';
-            packages = [];
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                data.id = doc.id;
-                // Optional sortOrder - if missing, still add the package
-                data.sortOrder = data.sortOrder !== undefined ? Number(data.sortOrder) : 9999;
-                packages.push(data);
-            });
-
-            // Sort by sortOrder (lowest first), but ALL packages are included
-            packages.sort((a, b) => a.sortOrder - b.sortOrder);
-
-            renderPackages(packages); // This will show ALL packages
+            document.getElementById('tourDetailsPopup').classList.remove('hidden');
         })
         .catch(err => {
-            console.error("Error loading packages:", err);
-            grid.innerHTML = '<p class="text-center col-span-full text-red-500 py-10">Error loading packages.</p>';
+            console.error("Error loading tour details:", err);
+            alert('Error loading tour details');
         });
-});
-
-let allPackages = [];
-
-// Populate the correct dropdown
-function populatePackageDropdown() {
-    const packageSelect = document.querySelector('#package-tab select#package');
-    if (!packageSelect) {
-        console.error("Package dropdown not found inside Package tab!");
-        return;
-    }
-
-    packageSelect.innerHTML = '<option value="">Select Package</option>';
-
-    if (allPackages.length === 0) {
-        packageSelect.innerHTML += '<option disabled>No packages available</option>';
-        return;
-    }
-
-    allPackages.forEach(pkg => {
-        const option = document.createElement('option');
-        option.value = pkg.dataPackage || pkg.id;
-        option.textContent = `${pkg.title} • ${pkg.duration || 'N/A'} • ₹${pkg.price || '0'}`;
-        if (pkg.saleText) option.textContent += ` [${pkg.saleText}]`;
-        packageSelect.appendChild(option);
-    });
-
-    console.log(`Package dropdown populated with ${allPackages.length} items`);
 }
 
-// In your Firebase loading code, call it after loading packages
-document.addEventListener('DOMContentLoaded', () => {
-    const grid = document.getElementById('packagesGrid');
-    grid.innerHTML = '<p class="text-center col-span-full py-10 text-gray-500">Loading packages...</p>';
+    // Close Tour Details Popup
+    function closeTourDetailsPopup() {
+        document.getElementById('tourDetailsPopup').classList.add('hidden');
+    }
 
-    db.collection('packages')
-        .orderBy('sortOrder')
-        .get()
-        .then(snapshot => {
+    // Fixed: Book This Tour Now → Opens the booking popup correctly
+function bookThisFixedTour() {
+    if (!currentFixedTour || !currentFixedTour.id) {
+        alert('No tour selected! Please try again.');
+        return;
+    }
+
+    closeTourDetailsPopup();
+
+    // Fill popup title, duration, price
+    document.getElementById('popupPackageTitle').textContent = 
+        (currentFixedTour.title || 'Fixed Group Tour') + ' (Fixed Departure)';
+    document.getElementById('popupPackageDuration').textContent = currentFixedTour.duration || 'N/A';
+    document.getElementById('popupPackagePrice').textContent = '₹' + (currentFixedTour.price || '0');
+
+    currentPopupPackage = currentFixedTour.id;
+
+    // Show the popup first
+    document.getElementById('bookingPopup').classList.remove('hidden');
+    document.getElementById('bookingPopup').classList.add('flex');
+
+    // Small delay to ensure popup is fully rendered
+    setTimeout(() => {
+        // === Travel Date (Departure) - Make it a non-editable pill ===
+        const travelDateInput = document.getElementById('popupTravelDate');
+        travelDateInput.type = 'text';
+
+        let dateValue = currentFixedTour.departure || 'As per Tour Guide';
+        // Format to match your screenshot: lowercase with hyphens (e.g., "15-feb-2026")
+        dateValue = dateValue.toLowerCase().replace(/\s+/g, '-');
+
+        travelDateInput.value = dateValue;
+        travelDateInput.readOnly = true;
+
+        // Style as non-editable pill (no border, full rounded, centered text)
+        travelDateInput.classList.remove('focus:border-primary', 'focus:bg-white', 'border-primary', 'rounded-2xl');
+        travelDateInput.classList.add('rounded-full', 'text-center', 'font-medium', 'bg-gray-200', 'text-gray-800', 'cursor-default');
+        travelDateInput.style.border = 'none';
+        travelDateInput.style.outline = 'none';
+
+        // === Hotel Category - Non-editable pill with "AS PER TOUR GUIDE" ===
+        const hotelSelect = document.getElementById('popupHotelCategory');
+        hotelSelect.innerHTML = '<option value="as-per-tour">AS PER TOUR GUIDE</option>';
+        hotelSelect.value = 'as-per-tour';
+        hotelSelect.disabled = true;
+
+        // Style as pill + hide dropdown arrow
+        hotelSelect.classList.remove('focus:border-primary', 'focus:bg-white', 'rounded-2xl');
+        hotelSelect.classList.add('rounded-full', 'bg-gray-200', 'text-gray-800', 'font-medium', 'cursor-default', 'appearance-none');
+        hotelSelect.style.border = 'none';
+        hotelSelect.style.outline = 'none';
+        hotelSelect.style.paddingRight = '1.25rem'; // Reduce padding to mimic no arrow
+
+        // === Meal Type - Non-editable pill with "AS PER TOUR GUIDE" ===
+        const mealSelect = document.getElementById('popupMealType');
+        mealSelect.innerHTML = '<option value="as-per-tour">AS PER TOUR GUIDE</option>';
+        mealSelect.value = 'as-per-tour';
+        mealSelect.disabled = true;
+
+        // Same styling as hotel
+        mealSelect.classList.remove('focus:border-primary', 'focus:bg-white', 'rounded-2xl');
+        mealSelect.classList.add('rounded-full', 'bg-gray-200', 'text-gray-800', 'font-medium', 'cursor-default', 'appearance-none');
+        mealSelect.style.border = 'none';
+        mealSelect.style.outline = 'none';
+        mealSelect.style.paddingRight = '1.25rem';
+
+    }, 100);
+}
+
+    let allPackages = [];
+
+    // Render packages
+    function renderPackages(packagesList = allPackages) {
+        const grid = document.getElementById('packagesGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        if (packagesList.length === 0) {
+            grid.innerHTML = '<p class="text-center col-span-full py-20 text-gray-500 text-xl">No packages available yet.</p>';
+            return;
+        }
+
+        packagesList.forEach(pkg => {
+            const card = document.createElement('div');
+            card.className = 'group h-[520px] w-full [perspective:1200px]';
+            card.dataset.package = pkg.dataPackage || pkg.id;
+
+            card.innerHTML = `
+                <div class="relative h-full w-full rounded-2xl shadow-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] bg-white">
+                    <!-- Front -->
+                    <div class="absolute inset-0 rounded-2xl [backface-visibility:hidden] flex flex-col overflow-hidden">
+                        <div class="h-64 bg-cover bg-center" style="background-image: url('${pkg.imageUrl || ''}')"></div>
+                        <div class="flex-1 p-6 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-2xl font-bold text-[#181010] mb-3">${pkg.title || 'Untitled'}</h3>
+                                <div class="flex items-center gap-3 mb-4">
+                                    ${pkg.saleText ? `<span class="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">${pkg.saleText}</span>` : ''}
+                                    <span class="text-3xl font-black text-primary">₹${pkg.price || '0'}</span>
+                                    ${pkg.oldPrice ? `<span class="text-lg text-gray-500 line-through ml-2">₹${pkg.oldPrice}</span>` : ''}
+                                </div>
+                                <p class="text-gray-600 mb-4 line-clamp-3">${pkg.description || ''}</p>
+                                <p class="text-sm font-medium text-gray-500"><strong>${pkg.location || ''}</strong> • ${pkg.duration || ''}</p>
+                            </div>
+                            <button class="w-full mt-6 bg-primary text-white py-4 rounded-xl font-bold hover:bg-red-600 transition shadow-lg">View Details</button>
+                        </div>
+                    </div>
+                    <!-- Back -->
+                    <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-900 to-primary text-white [backface-visibility:hidden] [transform:rotateY(180deg)] p-8 flex flex-col justify-center items-center text-center">
+                        <h3 class="text-3xl font-black mb-8">${pkg.title || 'Untitled'}</h3>
+                        <ul class="space-y-6 mb-10 text-lg">
+                            <li class="flex items-center gap-4"><span class="material-symbols-outlined text-2xl">location_on</span> ${pkg.location || ''}</li>
+                            <li class="flex items-center gap-4"><span class="material-symbols-outlined text-2xl">calendar_today</span> ${pkg.duration || ''}</li>
+                        </ul>
+                        <div class="space-y-4 w-full">
+                            <a onclick="openBookingPopup('${pkg.dataPackage || pkg.id}', '${(pkg.title || '').replace(/'/g, "\\'")}', '${pkg.duration || ''}', '${pkg.price || '0'}')" class="block w-full bg-white text-primary py-4 rounded-xl font-bold hover:bg-gray-100 transition-all duration-300 shadow-lg cursor-pointer">
+                                Book Now
+                            </a>
+                            <button class="more-details w-full border-2 border-white text-white py-4 rounded-xl font-bold hover:bg-white/20 transition">More Details</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        attachFlipCardListeners();
+    }
+
+    function attachFlipCardListeners() {
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('click', e => {
+                if (e.target.closest('.more-details')) {
+                    e.stopPropagation();
+                    const pkg = allPackages.find(p => (p.dataPackage || p.id) === card.dataset.package);
+                    if (pkg) {
+                        document.getElementById('modalTitle').textContent = pkg.title;
+                        document.getElementById('modalDescription').innerHTML = pkg.moreDetails || pkg.description || 'No details.';
+                        document.getElementById('detailsModal').classList.remove('hidden');
+                    }
+                }
+            });
+        });
+    }
+
+    function populatePackageDropdown() {
+        const select = document.querySelector('#package-tab select#package');
+        if (!select) return;
+
+        select.innerHTML = '<option value="">Select Package</option>';
+        allPackages.forEach(pkg => {
+            const opt = document.createElement('option');
+            opt.value = pkg.dataPackage || pkg.id;
+            opt.textContent = `${pkg.title} • ${pkg.duration || 'N/A'} • ₹${pkg.price || '0'}`;
+            select.appendChild(opt);
+        });
+    }
+
+    function openPackageBooking(packageId) {
+        const bookingWidget = document.querySelector('.w-full.max-w-lg'); // your booking card container
+        if (bookingWidget) bookingWidget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'bg-white', 'shadow-sm', 'text-primary'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+
+        const packageBtn = document.querySelector('.tab-btn[data-tab="package"]');
+        if (packageBtn) packageBtn.classList.add('active', 'bg-white', 'shadow-sm', 'text-primary');
+        const packageTab = document.getElementById('package-tab');
+        if (packageTab) packageTab.classList.remove('hidden');
+
+        const select = document.querySelector('#package-tab select#package');
+        if (select && packageId) select.value = packageId;
+    }
+
+    function updateCounter(type, change) {
+        const input = document.getElementById(type);
+        if (!input) return;
+        let value = parseInt(input.value) || 0;
+        value += change;
+        if (type === 'adults' && value < 1) value = 1;
+        if (type === 'children' && value < 0) value = 0;
+        input.value = value;
+    }
+
+    // Save enquiry to Firebase
+    function saveBooking(bookingData) {
+    const newBooking = {
+        id: Date.now().toString(),
+        type: bookingData.type,
+        timestamp: new Date().toISOString(),
+        status: 'pending',
+        name: bookingData.name || '',
+        persons: parseInt(bookingData.persons) || 1,
+        phone: bookingData.phone || '',
+        email: bookingData.email || '',
+        travelDate: bookingData.travelDate || '',
+        additionalInfo: bookingData.additionalInfo || ''
+    };
+
+    // Add type-specific fields
+    if (bookingData.type === 'package') {
+        newBooking.packageId = bookingData.packageId;
+        newBooking.hotelCategory = bookingData.hotelCategory;
+        newBooking.mealType = bookingData.mealType;
+    } else if (bookingData.type === 'car') {
+        newBooking.pickupLocation = bookingData.pickupLocation;
+        newBooking.pickupDate = bookingData.pickupDate;
+        newBooking.pickupTime = bookingData.pickupTime || '';
+        newBooking.dropoffDate = bookingData.dropoffDate;
+        newBooking.dropoffTime = bookingData.dropoffTime || '';
+        newBooking.vehicleType = bookingData.vehicleType;
+    } else if (bookingData.type === 'cruise') {
+        newBooking.cruiseDestination = bookingData.cruiseDestination;
+        newBooking.departureDate = bookingData.departureDate;
+        newBooking.cruiseDuration = bookingData.cruiseDuration;
+        newBooking.guests = parseInt(bookingData.guests) || 1;
+    } else if (bookingData.type === 'visa') {
+        newBooking.visaDestination = bookingData.visaDestination;
+        newBooking.visaDetails = bookingData.visaDetails;
+    }
+
+    // Save to Firebase
+    db.collection('bookings').doc(newBooking.id).set(newBooking)
+        .then(() => {
+            // === Show Proper Success Popup Instead of Alert ===
+            document.getElementById('successPopup').classList.remove('hidden');
+
+            // Optional: Reset form if you have a reference (adjust selector as needed)
+            // const form = document.getElementById('popupBookingForm'); // or your form ID
+            // if (form) form.reset();
+
+            // === WhatsApp Notification to Admin ===
+            if (ADMIN_WHATSAPP && ADMIN_WHATSAPP.trim() !== '') {
+                let message = '🔔 New Booking Enquiry!\n\n';
+                message += `📋 Type: ${newBooking.type.charAt(0).toUpperCase() + newBooking.type.slice(1)}\n`;
+                message += `👤 Name: ${newBooking.name || 'N/A'}\n`;
+                message += `📞 Phone: ${newBooking.phone || 'N/A'}\n`;
+                message += `✉️ Email: ${newBooking.email || 'N/A'}\n`;
+                message += `👥 Persons/Guests: ${newBooking.persons || newBooking.guests || 1}\n`;
+
+                // Type-specific details
+                if (newBooking.type === 'package') {
+                    message += `🎒 Package ID: ${newBooking.packageId || 'N/A'}\n`;
+                    message += `🏨 Hotel: ${newBooking.hotelCategory || 'N/A'}\n`;
+                    message += `🍽️ Meals: ${newBooking.mealType || 'N/A'}\n`;
+                } else if (newBooking.type === 'car') {
+                    message += `🚗 Pickup: ${newBooking.pickupLocation || 'N/A'} on ${newBooking.pickupDate || 'N/A'} ${newBooking.pickupTime || ''}\n`;
+                    message += `🚙 Dropoff: ${newBooking.dropoffDate || 'N/A'} ${newBooking.dropoffTime || ''}\n`;
+                    message += `🚘 Vehicle: ${newBooking.vehicleType || 'N/A'}\n`;
+                } else if (newBooking.type === 'cruise') {
+                    message += `🛳️ Destination: ${newBooking.cruiseDestination || 'N/A'}\n`;
+                    message += `📅 Departure: ${newBooking.departureDate || 'N/A'}\n`;
+                    message += `⏱️ Duration: ${newBooking.cruiseDuration || 'N/A'}\n`;
+                    message += `👥 Guests: ${newBooking.guests || 'N/A'}\n`;
+                } else if (newBooking.type === 'visa') {
+                    message += `🛂 Country: ${newBooking.visaDestination || 'N/A'}\n`;
+                    message += `📝 Details: ${newBooking.visaDetails || 'N/A'}\n`;
+                }
+
+                message += `📅 Travel Date: ${newBooking.travelDate || 'N/A'}\n`;
+                message += `📝 Additional Info: ${newBooking.additionalInfo || 'None'}\n`;
+                message += `🕒 Submitted: ${new Date().toLocaleString('en-IN')}\n\n`;
+                message += 'Please follow up with the customer! 🚀';
+
+                const encodedMessage = encodeURIComponent(message);
+                const whatsappUrl = `https://wa.me/${ADMIN_WHATSAPP}?text=${encodedMessage}`;
+
+                // Reuse the same WhatsApp tab
+                window.open(whatsappUrl, 'whatsapp_tab');
+            }
+        })
+        .catch((error) => {
+            console.error("Error saving booking:", error);
+            alert('Error submitting booking. Please try again.');
+        });
+}
+
+    // SINGLE DOMContentLoaded — Everything in one place
+    document.addEventListener('DOMContentLoaded', () => {
+        const toursGrid = document.getElementById('fixedToursGrid');
+        toursGrid.innerHTML = '<p class="text-center py-10 text-gray-500">Loading fixed tours...</p>';
+
+        db.collection('fixedGroupTours').get()
+            .then(snapshot => {
+                fixedTours = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    data.id = doc.id;
+                    data.sortOrder = data.sortOrder ?? 9999;
+                    fixedTours.push(data);
+                });
+
+                fixedTours.sort((a, b) => a.sortOrder - b.sortOrder);
+                renderFixedTours();
+            })
+            .catch(err => {
+                console.error("Error loading fixed tours:", err);
+                toursGrid.innerHTML = '<p class="text-center py-10 text-red-500">Error loading fixed tours.</p>';
+            });
+
+        const grid = document.getElementById('packagesGrid');
+        if (grid) {
+            grid.innerHTML = '<p class="text-center col-span-full py-20 text-gray-500">Loading packages...</p>';
+        }
+
+        // Load header
+        db.collection('settings').doc('header').get().then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                if (data.companyName) document.getElementById('siteName').textContent = data.companyName;
+                if (data.companyLogo) {
+                    const logo = document.getElementById('siteLogo');
+                    logo.src = data.companyLogo;
+                    logo.classList.remove('hidden');
+                }
+            }
+        });
+
+        // Load packages
+        db.collection('packages').get().then(snapshot => {
             allPackages = [];
             snapshot.forEach(doc => {
                 const data = doc.data();
                 data.id = doc.id;
-                data.sortOrder = data.sortOrder ?? 9999;
                 allPackages.push(data);
             });
-
-            allPackages.sort((a, b) => a.sortOrder - b.sortOrder);
-
+            allPackages.sort((a, b) => (a.sortOrder || 9999) - (b.sortOrder || 9999));
             renderPackages(allPackages);
-
-            // NOW IT WILL WORK — targets the correct dropdown inside the form
             populatePackageDropdown();
-        })
-        .catch(err => {
-            console.error("Error:", err);
-            grid.innerHTML = '<p class="text-center col-span-full py-10 text-red-500">Error loading packages</p>';
+        }).catch(err => {
+            console.error(err);
+            if (grid) grid.innerHTML = '<p class="text-center col-span-full py-20 text-red-500">Error loading packages</p>';
         });
-});
 
+        // Add fixed tours to dropdown on load (for consistency)
+        db.collection('fixedGroupTours').orderBy('sortOrder').get()
+            .then(snapshot => {
+                const select = document.getElementById('package');
+                if (!select) return;
 
+                snapshot.forEach(doc => {
+                    const tour = doc.data();
+                    tour.id = doc.id;
 
+                    if (!Array.from(select.options).some(opt => opt.value === tour.id)) {
+                        const opt = document.createElement('option');
+                        opt.value = tour.id;
+                        opt.textContent = `${tour.title} • ${tour.duration || 'N/A'} • ₹${tour.price} (Fixed Group Tour)`;
+                        select.appendChild(opt);
+                    }
+                });
+            });
 
+        // Tab switching
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'bg-white', 'shadow-sm', 'text-primary'));
                 document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
-
                 btn.classList.add('active', 'bg-white', 'shadow-sm', 'text-primary');
-                const tabId = btn.getAttribute('data-tab');
-                document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+                document.getElementById(btn.dataset.tab + '-tab').classList.remove('hidden');
             });
         });
 
-
         // Modal close
-        document.querySelector('.close').addEventListener('click', () => {
+        document.querySelector('.close')?.addEventListener('click', () => {
             document.getElementById('detailsModal').classList.add('hidden');
         });
-// Load Company Name & Logo from Firebase
-document.addEventListener('DOMContentLoaded', () => {
-    db.collection('settings').doc('header').get().then(doc => {
-        if (doc.exists) {
-            const data = doc.data();
-            
-            // Update company name
-            const siteNameEl = document.getElementById('siteName');
-            if (siteNameEl && data.companyName) {
-                siteNameEl.textContent = data.companyName;
-            }
 
-            // Update logo
-            const siteLogoEl = document.getElementById('siteLogo');
-            if (siteLogoEl && data.companyLogo) {
-                siteLogoEl.src = data.companyLogo;
-                siteLogoEl.classList.remove('hidden'); // Show logo
-                siteLogoEl.classList.add('block');
-            }
+        // FORM SUBMISSIONS
+        const packageForm = document.getElementById('packageBookingForm');
+        if (packageForm) {
+            packageForm.addEventListener('submit', e => {
+                e.preventDefault();
+                saveBooking({
+                    formId: 'packageBookingForm',
+                    type: 'package',
+                    name: packageForm.querySelector('#name')?.value.trim() || '',
+                    adults: packageForm.querySelector('#adults')?.value || 2,
+                    children: packageForm.querySelector('#children')?.value || 0,
+                    phone: packageForm.querySelector('#phone')?.value.trim() || '',
+                    email: packageForm.querySelector('#email')?.value.trim() || '',
+                    packageSelected: packageForm.querySelector('#package')?.value || '',
+                    travelDate: packageForm.querySelector('#travelDate')?.value || '',
+                    hotelCategory: packageForm.querySelector('#hotelCategory')?.value || '',
+                    mealType: packageForm.querySelector('#mealType')?.value || '',
+                    additionalInfo: packageForm.querySelector('#additionalInfo')?.value.trim() || ''
+                });
+            });
         }
-    }).catch(err => {
-        console.error("Error loading header settings:", err);
-    });
-});
 
-    </script>
+        // UNIVERSAL Popup Form Submit Handler - Works for Regular Packages + Fixed Tours
+        const popupForm = document.getElementById('popupBookingForm');
+        if (popupForm) {
+            popupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                if (!currentPopupPackage) {
+                    alert('No tour/package selected. Please try again.');
+                    return;
+                }
+
+                const isFixedTour = currentPopupPackageType === 'FIXED_TOUR';
+                const bookingType = isFixedTour ? 'FIXED_TOUR' : 'PACKAGE_POPUP';
+
+                const bookingData = {
+                    type: bookingType,
+                    packageSelected: currentPopupPackage,
+                    name: document.getElementById('popupName')?.value.trim() || '',
+                    adults: parseInt(document.getElementById('popupAdults')?.value) || 2,
+                    children: parseInt(document.getElementById('popupChildren')?.value) || 0,
+                    phone: document.getElementById('popupPhone')?.value.trim() || '',
+                    email: document.getElementById('popupEmail')?.value.trim() || '',
+                    travelDate: document.getElementById('popupTravelDate')?.value || '',
+                    hotelCategory: isFixedTour ? 'Included in Fixed Tour' : (document.getElementById('popupHotelCategory')?.value || ''),
+                    mealType: isFixedTour ? 'Included in Fixed Tour' : (document.getElementById('popupMealType')?.value || ''),
+                    additionalInfo: document.getElementById('popupAdditionalInfo')?.value.trim() || ''
+                };
+
+                if (!bookingData.name || !bookingData.phone || !bookingData.email) {
+                    alert('Please fill Name, Phone, and Email.');
+                    return;
+                }
+
+                saveBooking(bookingData);
+            });
+        }
+
+        // Filter packages by category when clicking wish images
+        document.querySelectorAll('.wish-category').forEach(item => {
+            item.addEventListener('click', () => {
+                const category = item.getAttribute('data-category');
+                
+                // Update active state
+                document.querySelectorAll('.wish-category').forEach(el => el.classList.remove('ring-4', 'ring-primary'));
+                item.classList.add('ring-4', 'ring-primary');
+                
+                // Filter packages
+                if (category === '') {
+                    renderPackages(allPackages); // Show all
+                } else {
+                    const filtered = allPackages.filter(pkg => pkg.category === category);
+                    renderPackages(filtered);
+                }
+            });
+        });
+    });
+
+    // Global variable to store current package for popup
+    let currentPopupPackage = null;
+    let currentPopupPackageType = null;  // Added this declaration
+
+    // Open popup with selected package
+    // In openBookingPopup() — restore required for regular packages
+function openBookingPopup(packageId, title, duration, price) {
+    const pkg = allPackages.find(p => (p.dataPackage || p.id) === packageId);
+    if (!pkg) return;
+
+    document.getElementById('popupPackageTitle').textContent = pkg.title || 'Package';
+    document.getElementById('popupPackageDuration').textContent = pkg.duration || 'N/A';
+    document.getElementById('popupPackagePrice').textContent = '₹' + (pkg.price || '0');
+
+    currentPopupPackage = packageId;
+    currentPopupPackageType = null;
+
+    // Show fields
+    document.getElementById('popupHotelCategory').closest('.grid').classList.remove('hidden');
+    document.getElementById('popupMealType').classList.remove('hidden');
+
+    // Restore required
+    document.getElementById('popupHotelCategory').required = true;
+    document.getElementById('popupMealType').required = true;
+
+    document.getElementById('bookingPopup').classList.remove('hidden');
+    document.getElementById('bookingPopup').classList.add('flex');
+}
+
+    // Close popup
+  // In closeBookingPopup() — reset for next use
+function closeBookingPopup() {
+    document.getElementById('bookingPopup').classList.add('hidden');
+    document.getElementById('bookingPopup').classList.remove('flex');
+    document.getElementById('popupBookingForm').reset();
+    document.getElementById('popupAdults').value = 2;
+    document.getElementById('popupChildren').value = 0;
+
+    // Restore visibility and required
+    document.getElementById('popupHotelCategory').closest('.grid').classList.remove('hidden');
+    document.getElementById('popupMealType').classList.remove('hidden');
+    document.getElementById('popupHotelCategory').required = true;
+    document.getElementById('popupMealType').required = true;
+
+    currentPopupPackage = null;
+    currentPopupPackageType = null;
+}
+
+    // Counter for popup
+    function updatePopupCounter(type, change) {
+        const inputId = 'popup' + type.charAt(0).toUpperCase() + type.slice(1);
+        const input = document.getElementById(inputId);
+        if (!input) return;
+
+        let value = parseInt(input.value) || 0;
+        value += change;
+
+        if (type === 'adults' && value < 1) value = 1;
+        if (type === 'children' && value < 0) value = 0;
+
+        input.value = value;
+    }
+
+    // Close success popup
+    function closeSuccessPopup() {
+        document.getElementById('successPopup').classList.add('hidden');
+    }
+</script>
+<!-- Booking Popup Modal -->
+<div id="bookingPopup" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 px-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8 relative">
+        <!-- Close Button -->
+        <button onclick="closeBookingPopup()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl">&times;</button>
+
+        <h2 class="text-3xl font-bold text-[#181010] mb-6">Book Your Package</h2>
+
+        <!-- Selected Package Display -->
+        <div id="selectedPackageDisplay" class="mb-6 p-4 bg-primary/10 rounded-2xl border border-primary/20">
+            <p class="text-lg font-semibold">Selected Package: <span id="popupPackageTitle" class="text-primary"></span></p>
+            <p class="text-sm text-gray-600 mt-1">Duration: <span id="popupPackageDuration"></span> • Price: <span id="popupPackagePrice"></span></p>
+        </div>
+
+        <form id="popupBookingForm" class="flex flex-col gap-6">
+            <!-- Name, Adults, Children -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <input type="text" id="popupName" placeholder="Name" class="px-5 py-4 rounded-2xl bg-gray-100 focus:bg-white focus:border-primary transition-all" required>
+
+                <div>
+                    <label class="block text-sm font-bold mb-2"># of Adults</label>
+                    <div class="flex items-center gap-3">
+                        <button type="button" onclick="updatePopupCounter('adults', -1)" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 text-xl">-</button>
+                        <input type="number" id="popupAdults" value="2" min="1" readonly class="w-20 text-center py-3 bg-gray-100 rounded-xl">
+                        <button type="button" onclick="updatePopupCounter('adults', 1)" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 text-xl">+</button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold mb-2"># of Children</label>
+                    <div class="flex items-center gap-3">
+                        <button type="button" onclick="updatePopupCounter('children', -1)" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 text-xl">-</button>
+                        <input type="number" id="popupChildren" value="0" min="0" readonly class="w-20 text-center py-3 bg-gray-100 rounded-xl">
+                        <button type="button" onclick="updatePopupCounter('children', 1)" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 text-xl">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phone & Email -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input type="tel" id="popupPhone" placeholder="Mobile Phone" class="px-5 py-4 rounded-2xl bg-gray-100 focus:bg-white focus:border-primary transition-all" required>
+                <input type="email" id="popupEmail" placeholder="Email Address" class="px-5 py-4 rounded-2xl bg-gray-100 focus:bg-white focus:border-primary transition-all" required>
+            </div>
+
+            <!-- Travel Date & Hotel -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input type="date" id="popupTravelDate" class="px-5 py-4 rounded-2xl bg-gray-100 focus:bg-white focus:border-primary transition-all" required>
+                <select id="popupHotelCategory" class="px-5 py-4 rounded-2xl bg-gray-100 focus:bg-white focus:border-primary transition-all" required>
+                    <option value="">Hotel Category</option>
+                    <option value="3star">3 Star</option>
+                    <option value="4star">4 Star</option>
+                    <option value="5star">5 Star</option>
+                </select>
+            </div>
+
+            <!-- Meal Type -->
+            <select id="popupMealType" class="px-5 py-4 rounded-2xl bg-gray-100 focus:bg-white focus:border-primary transition-all" required>
+                <option value="">Meal Type</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="bfast-lunch-dinner">Breakfast-Lunch-Dinner</option>
+                <option value="only-room">Only Room</option>
+            </select>
+
+            <!-- Additional Info -->
+            <textarea id="popupAdditionalInfo" rows="4" placeholder="Additional Information (e.g., special requests)" class="px-5 py-4 rounded-2xl bg-gray-100 focus:bg-white focus:border-primary transition-all resize-none"></textarea>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full h-16 bg-primary text-white rounded-full font-bold text-xl hover:bg-red-600 transition-all shadow-xl shadow-primary/20">
+                Submit Enquiry
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Success Popup -->
+<div id="successPopup" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 px-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 text-center animate-fade-in">
+        <div class="mb-6">
+            <div class="w-20 h-20 mx-auto bg-green-100 rounded-full flex items-center justify-center">
+                <span class="text-4xl text-green-600">✓</span>
+            </div>
+        </div>
+        <h3 class="text-2xl font-bold text-[#181010] mb-3">Enquiry Submitted Successfully!</h3>
+        <p class="text-gray-600 mb-8">We will contact you soon. Thank you!</p>
+        <button onclick="closeSuccessPopup()" class="w-full h-14 bg-primary text-white rounded-full font-bold text-lg hover:bg-red-600 transition-all duration-300 shadow-lg">
+            OK
+        </button>
+    </div>
+</div>
+
 </body>
 </html>
