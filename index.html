@@ -74,20 +74,20 @@
     
 <div class="flex items-center gap-4 mt-6 pt-6 border-t border-white/10 w-full"></div> -->
     <!-- Hero Section -->
-     <!-- Hero Section - Fully Mobile-Friendly (Single Column on Mobile) -->
-<main class="relative h-[85vh] md:h-screen flex items-center justify-center overflow-hidden">
+ <!-- Hero Section - Booking Form Moved Down + Better Backdrop Visibility -->
+<main class="relative h-[90vh] md:h-screen flex flex-col justify-end overflow-hidden">
     <!-- Background Image -->
     <div class="absolute inset-0 z-0">
         <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" 
-             style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC4fy04WcxMSdRDxJTanjQiRIfXfMt5TUOIAbE8Cz5jS4BWOMjPrtxK8PZhSbF9MrmHczkiUM8bo6ptSD32EmlwdjFoZFDPMO96FIFpyXVG_fRYAWFVVdIgk3kqv6ZLo-x0HZpxRFbn_DcQYtRtgHEDadMTFIUmAxUjrkZasdnTZOQt6LImdFyez2D-4mpy04sUOg4skjz1Y_rVoDAzUhrNNmEklemw6OhdWtHv_GYrs2AaDPdQyTc7skcTDyWf7ZjyNBC-pL_YXCg')">
+             style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC4fy04WcxMSdRDxJTanjQiRIfXfMt5TUOIAbE8Cz5jS4BWOMjPrtxK8PZhSbF9MrmHczkiUM8bo6ptSD32EmlwdjFoZFDPMO96FIFpyXVG_fRYAWFVVdIgk3kqv6ZLo-x0HZpxRFbn_DcQYtRtgHEDadMTFIUmAxUjrkZasdnTZOQt6LImdFyez2D-4mpy04sUOg4skjz1Y_rVoDAzUhrNNmEklemw6OhdWtHv_GYrs2AaDPdQyTc7skcTDyWf7ZjyNBC-pL_YXCg');">
         </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
     </div>
 
-    <!-- Hero Content - Single Column on Mobile -->
-    <div class="relative z-10 w-full max-w-[1280px] mx-auto px-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-            <!-- Left: Hero Text (Top on Mobile) -->
+    <!-- Hero Content - Text and Booking Form stacked vertically -->
+    <div class="relative z-10 w-full max-w-[1280px] mx-auto px-6 pb-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <!-- Left: Hero Text -->
             <div class="text-center lg:text-left text-white">
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6">
                     <span class="bg-primary text-white text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-wider">Flash Deal</span>
@@ -108,8 +108,8 @@
                 </div>
             </div>
 
-            <!-- Right: Booking Form (Below Text on Mobile) -->
-            <div class="w-full max-w-md mx-auto">
+            <!-- Right: Booking Form - Now below text on mobile, side-by-side on desktop -->
+            <div class="w-full max-w-md mx-auto lg:mx-0">
                 <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6">
                     <div class="mb-5">
                         <h3 class="text-xl font-bold text-[#181010]">Book Your Adventure</h3>
@@ -118,20 +118,20 @@
 
                     <!-- Tabs -->
                     <div class="flex p-1 bg-gray-100 rounded-full mb-5">
-                        <button class="tab-btn active flex-1 py-2 rounded-full bg-white shadow-sm text-primary text-sm font-bold" data-tab="package">
+                        <button class="tab-btn active flex-1 py-2.5 rounded-full bg-white shadow-sm text-primary text-sm font-bold" data-tab="package">
                             Package
                         </button>
-                        <button class="tab-btn flex-1 py-2 rounded-full text-gray-600 text-sm font-medium" data-tab="car">
+                        <button class="tab-btn flex-1 py-2.5 rounded-full text-gray-600 text-sm font-medium" data-tab="car">
                             Car
                         </button>
-                        <button class="tab-btn flex-1 py-2 rounded-full text-gray-600 text-sm font-medium" data-tab="cruise">
+                        <button class="tab-btn flex-1 py-2.5 rounded-full text-gray-600 text-sm font-medium" data-tab="cruise">
                             Cruise
                         </button>
-                        <button class="tab-btn flex-1 py-2 rounded-full text-gray-600 text-sm font-medium" data-tab="visa">
+                        <button class="tab-btn flex-1 py-2.5 rounded-full text-gray-600 text-sm font-medium" data-tab="visa">
                             Visa
                         </button>
                     </div>
-
+                    
         <!-- Tab Content -->
         <!-- Package Tab -->
 <!-- Package Tab -->
