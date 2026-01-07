@@ -74,7 +74,7 @@
     
 <div class="flex items-center gap-4 mt-6 pt-6 border-t border-white/10 w-full"></div> -->
  
-<!-- Hero Section - Fully Responsive | Mobile: Full form in one screen (vertical only) -->
+<!-- <!-- Hero Section - No Scroll on Desktop | Wider Form | Responsive -->
 <main class="relative min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-hidden">
     <!-- Background Image -->
     <div class="absolute inset-0 z-0">
@@ -86,7 +86,7 @@
 
     <!-- Hero Content -->
     <div class="relative z-10 w-full max-w-[1280px] mx-auto px-6 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">  <!-- items-start for better mobile alignment -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
             <!-- Hero Text -->
             <div class="text-center lg:text-left text-white order-1">
                 <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6 mx-auto lg:mx-0">
@@ -108,50 +108,50 @@
                 </div>
             </div>
 
-            <!-- Booking Form - Full visible on mobile (no horizontal scroll) -->
-            <div class="w-full max-w-sm mx-auto order-2 mt-12 lg:mt-0">
-                <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 max-h-[70vh] overflow-y-auto">  <!-- Scroll vertically if needed -->
+            <!-- Booking Form - Wider on Desktop, No Scroll -->
+            <div class="w-full max-w-md mx-auto order-2 mt-12 lg:mt-0 lg:max-w-md">  <!-- Wider on desktop -->
+                <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6">
                     <div class="mb-5">
                         <h3 class="text-xl font-bold text-[#181010]">Book Your Adventure</h3>
                         <p class="text-sm text-gray-500 mt-1">Plan the trip of a lifetime.</p>
                     </div>
 
-                    <!-- Tabs - Horizontally scrollable only if extremely small screen -->
-                    <div class="flex gap-2 mb-5 overflow-x-auto pb-2 whitespace-nowrap">
-                        <button class="tab-btn active px-5 py-2.5 rounded-full bg-primary text-white text-sm font-bold flex-shrink-0" data-tab="package">
+                    <!-- Tabs -->
+                    <div class="flex p-1 bg-gray-100 rounded-full mb-5 overflow-x-auto scrollbar-hide">
+                        <button class="tab-btn active flex-1 min-w-fit px-5 py-2.5 rounded-full bg-primary text-white text-sm font-bold" data-tab="package">
                             Package
                         </button>
-                        <button class="tab-btn px-5 py-2.5 rounded-full bg-gray-100 text-gray-600 text-sm font-medium flex-shrink-0" data-tab="car">
+                        <button class="tab-btn flex-1 min-w-fit px-5 py-2.5 rounded-full bg-transparent text-gray-600 text-sm font-medium" data-tab="car">
                             Car
                         </button>
-                        <button class="tab-btn px-5 py-2.5 rounded-full bg-gray-100 text-gray-600 text-sm font-medium flex-shrink-0" data-tab="cruise">
+                        <button class="tab-btn flex-1 min-w-fit px-5 py-2.5 rounded-full bg-transparent text-gray-600 text-sm font-medium" data-tab="cruise">
                             Cruise
                         </button>
-                        <button class="tab-btn px-5 py-2.5 rounded-full bg-gray-100 text-gray-600 text-sm font-medium flex-shrink-0" data-tab="visa">
+                        <button class="tab-btn flex-1 min-w-fit px-5 py-2.5 rounded-full bg-transparent text-gray-600 text-sm font-medium" data-tab="visa">
                             Visa
                         </button>
                     </div>
 
-                    <!-- Package Tab Form - All fields full width -->
+                    <!-- Package Tab Form -->
                     <div id="package-tab" class="tab-pane active">
-                        <form id="packageBookingForm" class="flex flex-col gap-3">
-                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-3">
+                        <form id="packageBookingForm" class="flex flex-col gap-4">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                                 <h2 class="text-base font-bold text-[#181010] whitespace-nowrap">Book Your Package</h2>
-                                <select id="package" name="package" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm bg-white" required>
+                                <select id="package" name="package" class="flex-1 w-full px-4 py-3 rounded-xl border border-gray-300 text-sm bg-white" required>
                                     <option value="">Select Package</option>
                                     <!-- Filled by JS -->
                                 </select>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <input type="text" id="name" placeholder="Name" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm" required>
-                                <input type="tel" id="phone" placeholder="Phone" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm" required>
-                                <input type="email" id="email" placeholder="Email" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm" required>
+                                <input type="text" id="name" placeholder="Name" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm" required>
+                                <input type="tel" id="phone" placeholder="Phone" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm" required>
+                                <input type="email" id="email" placeholder="Email" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm" required>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                <input type="date" id="travelDate" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm" required>
-                                <select id="hotelCategory" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm" required>
+                                <input type="date" id="travelDate" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm" required>
+                                <select id="hotelCategory" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm" required>
                                     <option value="">Hotel Category</option>
                                     <option value="3star">3 Star</option>
                                     <option value="4star">4 Star</option>
@@ -159,26 +159,26 @@
                                 </select>
                             </div>
 
-                            <div class="grid grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-700 mb-1"># of Adults</label>
-                                    <div class="flex items-center gap-2">
+                                    <label class="block text-xs font-bold text-gray-700 mb-2"># of Adults</label>
+                                    <div class="flex items-center gap-3">
                                         <button type="button" onclick="updateCounter('adults', -1)" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-lg font-bold">-</button>
-                                        <input type="number" id="adults" value="2" min="1" readonly class="w-16 text-center py-2 border rounded text-sm font-bold">
+                                        <input type="number" id="adults" value="2" min="1" readonly class="w-20 text-center py-3 rounded-xl bg-gray-100 text-sm font-bold">
                                         <button type="button" onclick="updateCounter('adults', 1)" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-lg font-bold">+</button>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-700 mb-1"># of Children</label>
-                                    <div class="flex items-center gap-2">
+                                    <label class="block text-xs font-bold text-gray-700 mb-2"># of Children</label>
+                                    <div class="flex items-center gap-3">
                                         <button type="button" onclick="updateCounter('children', -1)" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-lg font-bold">-</button>
-                                        <input type="number" id="children" value="0" min="0" readonly class="w-16 text-center py-2 border rounded text-sm font-bold">
+                                        <input type="number" id="children" value="0" min="0" readonly class="w-20 text-center py-3 rounded-xl bg-gray-100 text-sm font-bold">
                                         <button type="button" onclick="updateCounter('children', 1)" class="w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center text-lg font-bold">+</button>
                                     </div>
                                 </div>
                             </div>
 
-                            <textarea id="additionalInfo" rows="3" placeholder="Additional Information" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 resize-none text-sm"></textarea>
+                            <textarea id="additionalInfo" rows="3" placeholder="Additional Information" class="w-full px-4 py-3 rounded-xl border border-gray-300 resize-none text-sm"></textarea>
 
                             <button type="submit" class="w-full h-12 bg-primary text-white rounded-full font-bold text-base hover:bg-red-600 transition shadow-xl">
                                 Submit Enquiry
