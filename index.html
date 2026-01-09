@@ -107,34 +107,35 @@
                 
 
                 <!-- Three Buttons - Horizontal Line, Centered -->
-                <div class="flex flex-col md:flex-row gap-6 justify-center w-full">
-                    <!-- Fixed Group Tours -->
-                    <a href="#fixedToursGrid" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-600 to-pink-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex-1 max-w-xs">
-                        <div class="bg-white rounded-2xl p-5 text-center">
-                            <div class="text-4xl mb-3">✈️</div>
-                            <h3 class="text-lg font-bold text-[#181010]">Fixed Group Tours</h3>
-                            <span class="inline-block mt-2 text-primary font-semibold text-sm group-hover:translate-x-2 transition">Explore →</span>
-                        </div>
-                    </a>
+                <!-- Three Animated Buttons - Hidden on Mobile, Visible on Desktop -->
+<div class="hidden md:grid md:grid-cols-3 gap-6">
+    <!-- Fixed Group Tours -->
+    <a href="#fixedToursGrid" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-600 to-pink-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+        <div class="bg-white rounded-2xl p-5 text-center">
+            <div class="text-4xl mb-3">✈️</div>
+            <h3 class="text-lg font-bold text-[#181010]">Fixed Group Tours</h3>
+            <span class="inline-block mt-2 text-primary font-semibold text-sm group-hover:translate-x-2 transition">Explore →</span>
+        </div>
+    </a>
 
-                    <!-- Wish List -->
-                    <a href="#wishCategoriesGrid" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex-1 max-w-xs">
-                        <div class="bg-white rounded-2xl p-5 text-center">
-                            <div class="text-4xl mb-3">❤️</div>
-                            <h3 class="text-lg font-bold text-[#181010]">Wish List</h3>
-                            <span class="inline-block mt-2 text-primary font-semibold text-sm group-hover:translate-x-2 transition">Discover →</span>
-                        </div>
-                    </a>
+    <!-- Wish List -->
+    <a href="#wishCategoriesGrid" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+        <div class="bg-white rounded-2xl p-5 text-center">
+            <div class="text-4xl mb-3">❤️</div>
+            <h3 class="text-lg font-bold text-[#181010]">Wish List</h3>
+            <span class="inline-block mt-2 text-primary font-semibold text-sm group-hover:translate-x-2 transition">Discover →</span>
+        </div>
+    </a>
 
-                    <!-- Explore Packages -->
-                    <a href="#packages" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 to-teal-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex-1 max-w-xs">
-                        <div class="bg-white rounded-2xl p-5 text-center">
-                            <div class="text-4xl mb-3">🎒</div>
-                            <h3 class="text-lg font-bold text-[#181010]">Explore Packages</h3>
-                            <span class="inline-block mt-2 text-primary font-semibold text-sm group-hover:translate-x-2 transition">View All →</span>
-                        </div>
-                    </a>
-                </div>
+    <!-- Explore Packages -->
+    <a href="#packages" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 to-teal-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+        <div class="bg-white rounded-2xl p-5 text-center">
+            <div class="text-4xl mb-3">🎒</div>
+            <h3 class="text-lg font-bold text-[#181010]">Explore Packages</h3>
+            <span class="inline-block mt-2 text-primary font-semibold text-sm group-hover:translate-x-2 transition">View All →</span>
+        </div>
+    </a>
+</div>
             </div>
 
             <!-- Right: Booking Form (Vertically Centered) -->
