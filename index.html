@@ -45,6 +45,15 @@
       padding-top: 4rem;  /* ~64px - good balanced space */
     }
   }
+
+ 
+  /* Add extra padding between hero and Fixed Tours section – only on mobile */
+  @media (max-width: 1023px) { /* below lg breakpoint */
+    #fixedToursSection {
+      padding-top: 4rem; /* ~64px – good balanced space */
+    }
+  }
+
 </style>
 <!-- <body style="zoom: 90%; transform: scale(0.90); transform-origin: top center;"> </body> -->
 <body class="bg-background-light font-display text-[#181010] antialiased">
@@ -400,7 +409,7 @@
 
 </div>
             <!-- Scrollable Cards -->
-         <div class="overflow-x-auto scrollbar-hide bg-gradient-to-b from-blue-50 to-white">  <!-- ← Add this background here -->
+        <div class="overflow-x-auto scrollbar-hide bg-gradient-to-b from-[#5a9fff] via-[#6ab8ff] to-[#8ac8ff]"><!-- ← Add this background here -->
     <div id="fixedToursGrid" class="flex gap-8 pb-4" style="min-width: max-content;">
         <!-- Cards -->
     </div>
