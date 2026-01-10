@@ -36,15 +36,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 </head>
 <style>
-    header.hidden {
-        transform: translateY(-100%);
-    }
+  header.hidden {
+    transform: translateY(-100%);
+  }
 </style>
 <!-- <body style="zoom: 90%; transform: scale(0.90); transform-origin: top center;"> </body> -->
 <body class="bg-background-light font-display text-[#181010] antialiased">
 
     <!-- Navigation -->
-   <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-[#f5f0f0]">
+   <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-gray-200">    <!-- Your existing header content -->
     <div class="max-w-[1280px] mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
         <!-- Left: Logo + Company Name (Dynamic from Firebase) -->
         <a href="index.html" class="flex items-center gap-3">
@@ -1398,46 +1398,30 @@ function loadWishCategories() {
             grid.innerHTML = '<p class="col-span-full text-center text-red-500 py-10">Error loading categories.</p>';
         });
 }
-
-// Hide header on scroll down, show on scroll up
+// Unified: Hide BOTH header + mobile quick nav on scroll down, show on scroll up
 let lastScrollTop = 0;
-window.addEventListener('scroll', () => {
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const header = document.querySelector('header');
-
-    if (scrollTop > lastScrollTop && scrollTop > 100) { // Scroll down + past 100px
-        header.classList.add('hidden');
-    } else {
-        header.classList.remove('hidden');
-    }
-
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For iOS bounce
-});
-
-// Mobile Quick Nav + Header Hide on Scroll Down / Click
-let lastScrollTop = 0;
-const mobileNav = document.getElementById('mobileQuickNav');
 const header = document.querySelector('header');
+const mobileNav = document.getElementById('mobileQuickNav');
 
 window.addEventListener('scroll', () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    if (scrollTop > lastScrollTop && scrollTop > 150) { // Scroll down + past 150px
-        if (mobileNav) mobileNav.classList.add('hidden');
+    if (scrollTop > lastScrollTop && scrollTop > 150) { // ↓ scroll down + past 150px
         if (header) header.classList.add('hidden');
-    } else {
-        if (mobileNav) mobileNav.classList.remove('hidden');
+        if (mobileNav) mobileNav.classList.add('hidden');
+    } else { // ↑ scroll up
         if (header) header.classList.remove('hidden');
+        if (mobileNav) mobileNav.classList.remove('hidden');
     }
 
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Fix for iOS bounce/negative scroll
 });
 
-// Hide both on button click (smooth)
+// Optional: Also hide both when clicking any mobile quick nav button
 document.querySelectorAll('#mobileQuickNav a').forEach(link => {
     link.addEventListener('click', () => {
-        if (mobileNav) mobileNav.classList.add('hidden');
         if (header) header.classList.add('hidden');
+        if (mobileNav) mobileNav.classList.add('hidden');
     });
 });
 </script>
