@@ -412,15 +412,18 @@
         <!-- Horizontal Scroll Container with Animated Arrows -->
         <div class="relative">
    <div class="flex justify-end">
-    <button 
-        onclick="document.getElementById('fixedToursGrid').scrollIntoView({behavior: 'smooth'})"
-        class="group relative w-14 h-14 flex items-center justify-center rounded-full border-2 border-primary/50 hover:border-primary transition-all duration-300">
-        <span class="text-4xl text-primary animate-bounce">↓</span>
-        <span class="absolute inset-0 rounded-full bg-primary/10 animate-ping-slow"></span>
-        <span class="absolute -bottom-8 text-xs font-medium text-gray-700 whitespace-nowrap group-hover:text-primary transition-colors">
-            More ↓
-        </span>
-    </button>
+<button 
+    onclick="document.getElementById('fixedToursGrid').scrollIntoView({behavior: 'smooth'})"
+    class="group relative w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-[#0348AC] to-[#023a8f] text-white shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300">
+    <!-- Inner pulse effect -->
+    <span class="absolute inset-0 rounded-full bg-white/20 animate-ping"></span>
+    
+    <!-- Arrow + Text -->
+    <div class="relative z-10 flex flex-col items-center">
+        <span class="text-3xl font-bold animate-bounce">↓</span>
+        <span class="text-xs font-semibold mt-1 tracking-wide uppercase">More</span>
+    </div>
+</button>
 </div>
 </div>
 
@@ -488,15 +491,21 @@
 </section>
 
    <div class="flex justify-end">
+    
     <button 
-        onclick="document.getElementById('fixedToursGrid').scrollIntoView({behavior: 'smooth'})"
-        class="group relative w-14 h-14 flex items-center justify-center rounded-full border-2 border-primary/50 hover:border-primary transition-all duration-300">
-        <span class="text-4xl text-primary animate-bounce">↓</span>
-        <span class="absolute inset-0 rounded-full bg-primary/10 animate-ping-slow"></span>
-        <span class="absolute -bottom-8 text-xs font-medium text-gray-700 whitespace-nowrap group-hover:text-primary transition-colors">
-            More ↓
-        </span>
-    </button>
+    onclick="document.getElementById('fixedToursGrid').scrollIntoView({behavior: 'smooth'})"
+    class="group relative w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-[#0348AC] to-[#023a8f] text-white shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300">
+    <!-- Inner pulse effect -->
+    <span class="absolute inset-0 rounded-full bg-white/20 animate-ping"></span>
+    
+    <!-- Arrow + Text -->
+    <div class="relative z-10 flex flex-col items-center">
+        <span class="text-3xl font-bold animate-bounce">↓</span>
+        <span class="text-xs font-semibold mt-1 tracking-wide uppercase">More</span>
+    </div>
+</button>
+
+
 </div>
 
     <!-- Packages Section -->
@@ -1171,22 +1180,19 @@ function closeSuccessPopup() {
     // === UNIFIED FILTERING (Category AND Tag Search) ===
 // Unified Filtering: Category AND Tag Search
 function applyFilters() {
-    let filtered = allPackages;
-
-    // Find the currently highlighted (active) category card
     const activeCard = document.querySelector('.wish-category.ring-4.ring-primary');
     const activeCategory = activeCard ? activeCard.dataset.category : '';
 
-    // If "View All" is active (or no category selected) → show EVERYTHING
-    if (!activeCategory || activeCategory === '') {
+    // If "View All" is active (empty category) OR no card is highlighted → show ALL packages
+    if (!activeCategory) {
         renderPackages(allPackages);
-        return; // Early exit - no filtering needed
+        return; // No further filtering needed
     }
 
-    // Otherwise apply category filter
-    filtered = filtered.filter(pkg => pkg.category === activeCategory);
+    // Normal category filter
+    let filtered = allPackages.filter(pkg => pkg.category === activeCategory);
 
-    // Apply tag search filter (if any text is entered)
+    // Tag search filter (only if text exists)
     const tagTerm = tagSearchInput ? tagSearchInput.value.trim().toLowerCase() : '';
     if (tagTerm !== '') {
         filtered = filtered.filter(pkg => {
@@ -1197,10 +1203,10 @@ function applyFilters() {
 
     renderPackages(filtered);
 
-    // Show no-results message if empty
+    // No results message
     if (filtered.length === 0) {
         document.getElementById('packagesGrid').innerHTML = 
-            '<p class="col-span-full text-center text-gray-500 py-20 text-xl">No packages found for the selected filters.</p>';
+            '<p class="col-span-full text-center text-gray-500 py-20 text-xl">No packages found.</p>';
     }
 }
 
@@ -1284,30 +1290,29 @@ viewAllCard.innerHTML = `
 
 // Click handler remains the same
 viewAllCard.addEventListener('click', () => {
-    // Remove active highlight from ALL category cards
+    // Step 1: Remove highlight from EVERY wish category card (including others)
     document.querySelectorAll('.wish-category').forEach(el => {
         el.classList.remove('ring-4', 'ring-primary');
     });
 
-    // Add highlight ONLY to this View All card
+    // Step 2: Highlight ONLY this "View All" card
     viewAllCard.classList.add('ring-4', 'ring-primary');
 
-    // Clear any tag search input (prevents tag filter from hiding cards)
-    const tagInput = document.getElementById('tagSearch');
-    if (tagInput) {
-        tagInput.value = '';
+    // Step 3: Clear tag search input completely
+    if (tagSearchInput) {
+        tagSearchInput.value = '';
     }
 
-    // Force render ALL packages immediately (safest way)
+    // Step 4: Force show ALL packages (safest & most direct way)
     renderPackages(allPackages);
 
-    // Optional: Smooth scroll to packages section so user sees the full list
+    // Step 5: Optional - smooth scroll to packages section
     document.getElementById('packages')?.scrollIntoView({ 
         behavior: 'smooth', 
         block: 'start' 
     });
 
-    // Run applyFilters last (now it will detect no active category)
+    // Step 6: Run applyFilters (now safe, since we already showed everything)
     applyFilters();
 });
 
