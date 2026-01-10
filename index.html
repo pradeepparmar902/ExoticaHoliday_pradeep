@@ -101,14 +101,16 @@
 
         <!-- Wish List -->
         <!-- Wish List - Same size as the other three on mobile -->
-            <a href="#wishCategoriesGrid" class="group flex-shrink-0 w-28 relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600/90 to-purple-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105 snap-center">
-                <div class="bg-white rounded-full py-2 px-3 flex flex-col items-center">
-                    <div class="text-2xl mb-0.5">❤️</div>
-                    <h3 class="text-xs font-bold text-[#181010] text-center leading-tight">Wish List</h3>
-                    <span class="text-[10px] text-primary font-medium group-hover:translate-x-1 transition-transform">→</span>
-                </div>
-            </a>
-
+            <!-- Wish List – Smaller size in mobile & desktop -->
+            <!-- Wish List – Smaller in BOTH mobile & desktop -->
+                <!-- Wish List - FORCED smaller size (mobile & desktop) -->
+<a href="#wishCategoriesGrid" class="group flex-shrink-0 !w-24 relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600/90 to-purple-600/90 !p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105 snap-center">
+    <div class="bg-white rounded-full !py-1.5 !px-2.5 flex flex-col items-center justify-center min-h-[80px]">
+        <div class="text-xl mb-0.5">❤️</div>
+        <h3 class="text-[11px] !font-bold text-[#181010] text-center leading-tight">Wish List</h3>
+        <span class="text-[9px] text-primary font-medium group-hover:translate-x-1 transition-transform">→</span>
+    </div>
+</a>
         <!-- Packages -->
         <a href="#packages" class="group flex-shrink-0 w-32 relative overflow-hidden rounded-full bg-gradient-to-r from-green-600/90 to-teal-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105 snap-center">
             <div class="bg-white rounded-full py-2 px-3 flex flex-col items-center">
