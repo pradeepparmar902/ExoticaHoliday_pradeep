@@ -35,7 +35,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 </head>
-<body style="zoom: 90%; transform: scale(0.90); transform-origin: top center;"> </body>
+<style>
+    header.hidden {
+        transform: translateY(-100%);
+    }
+</style>
+<!-- <body style="zoom: 90%; transform: scale(0.90); transform-origin: top center;"> </body> -->
 <body class="bg-background-light font-display text-[#181010] antialiased">
 
     <!-- Navigation -->
@@ -70,6 +75,43 @@
     </div>
 </header>
 
+<!-- Three Small Animated Buttons – Mobile Only, Between Header & Hero, One Horizontal Row -->
+<div class="block lg:hidden fixed top-20 left-0 right-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-md py-3">
+    <div class="flex gap-3 px-4 overflow-x-auto scrollbar-hide">
+        <!-- Fixed Group Tours -->
+        <a href="#fixedToursGrid" class="group relative overflow-hidden rounded-full bg-gradient-to-r from-red-600/90 to-pink-600/90 p-0.5 shadow hover:shadow-lg transition-all duration-300 hover:scale-105 flex-shrink-0 w-32">
+            <div class="bg-white rounded-full py-2 px-4 flex flex-col items-center justify-center h-full">
+                <div class="text-2xl mb-1">✈️</div>  <!-- Small icon -->
+                <h3 class="text-sm font-bold text-[#181010] text-center leading-tight">Fixed Tours</h3>
+                <span class="text-xs text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
+                    →
+                </span>
+            </div>
+        </a>
+
+        <!-- Wish List -->
+        <a href="#wishCategoriesGrid" class="group relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600/90 to-purple-600/90 p-0.5 shadow hover:shadow-lg transition-all duration-300 hover:scale-105 flex-shrink-0 w-32">
+            <div class="bg-white rounded-full py-2 px-4 flex flex-col items-center justify-center h-full">
+                <div class="text-2xl mb-1">❤️</div>  <!-- Small icon -->
+                <h3 class="text-sm font-bold text-[#181010] text-center leading-tight">Wish List</h3>
+                <span class="text-xs text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
+                    →
+                </span>
+            </div>
+        </a>
+
+        <!-- Explore Packages -->
+        <a href="#packages" class="group relative overflow-hidden rounded-full bg-gradient-to-r from-green-600/90 to-teal-600/90 p-0.5 shadow hover:shadow-lg transition-all duration-300 hover:scale-105 flex-shrink-0 w-32">
+            <div class="bg-white rounded-full py-2 px-4 flex flex-col items-center justify-center h-full">
+                <div class="text-2xl mb-1">🎒</div>  <!-- Small icon -->
+                <h3 class="text-sm font-bold text-[#181010] text-center leading-tight">Packages</h3>
+                <span class="text-xs text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
+                    →
+                </span>
+            </div>
+        </a>
+    </div>
+</div>
 
 <!-- <main class="relative pt-20 h-[400px] md:h-[650px] flex items-center justify-center overflow-hidden">
     
@@ -77,14 +119,22 @@
  <!-- https://lh3.googleusercontent.com/aida-public/AB6AXuC4fy04WcxMSdRDxJTanjQiRIfXfMt5TUOIAbE8Cz5jS4BWOMjPrtxK8PZhSbF9MrmHczkiUM8bo6ptSD32EmlwdjFoZFDPMO96FIFpyXVG_fRYAWFVVdIgk3kqv6ZLo-x0HZpxRFbn_DcQYtRtgHEDadMTFIUmAxUjrkZasdnTZOQt6LImdFyez2D-4mpy04sUOg4skjz1Y_rVoDAzUhrNNmEklemw6OhdWtHv_GYrs2AaDPdQyTc7skcTDyWf7ZjyNBC-pL_YXCg')" -->
 <!-- !-- Hero Section - Three Buttons Horizontally Centered & Vertically Centered -->
  
-<main class="relative min-h-screen overflow-hidden flex items-center justify-center">
+<!-- <main class="relative min-h-[70vh] overflow-hidden flex items-center justify-center"> -->
+    <main class="relative min-h-screen overflow-hidden flex items-center justify-center pt-24 lg:pt-0">
     <!-- Background Image -->
-    <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" 
-             style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC4fy04WcxMSdRDxJTanjQiRIfXfMt5TUOIAbE8Cz5jS4BWOMjPrtxK8PZhSbF9MrmHczkiUM8bo6ptSD32EmlwdjFoZFDPMO96FIFpyXVG_fRYAWFVVdIgk3kqv6ZLo-x0HZpxRFbn_DcQYtRtgHEDadMTFIUmAxUjrkZasdnTZOQt6LImdFyez2D-4mpy04sUOg4skjz1Y_rVoDAzUhrNNmEklemw6OhdWtHv_GYrs2AaDPdQyTc7skcTDyWf7ZjyNBC-pL_YXCg')">
-        </div>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+    <!-- Background Image + Dark Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent"></div>
+    <!-- Base Image -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" 
+         style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC4fy04WcxMSdRDxJTanjQiRIfXfMt5TUOIAbE8Cz5jS4BWOMjPrtxK8PZhSbF9MrmHczkiUM8bo6ptSD32EmlwdjFoZFDPMO96FIFpyXVG_fRYAWFVVdIgk3kqv6ZLo-x0HZpxRFbn_DcQYtRtgHEDadMTFIUmAxUjrkZasdnTZOQt6LImdFyez2D-4mpy04sUOg4skjz1Y_rVoDAzUhrNNmEklemw6OhdWtHv_GYrs2AaDPdQyTc7skcTDyWf7ZjyNBC-pL_YXCg')">
     </div>
+
+    <!-- Existing strong dark gradient (keeps bottom dark) -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+
+    <!-- New semi-transparent overlay (makes whole image softer & text pop) -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+</div>
 
     <!-- Hero Content - Vertically Centered -->
     <div class="relative z-10 w-full max-w-[1400px] mx-auto px-6">
@@ -107,10 +157,11 @@
                 
 
                 <!-- Three Buttons - Horizontal Line, Centered -->
-                <!-- Three Animated Buttons - Hidden on Mobile, Visible on Desktop -->
-<div class="hidden md:grid md:grid-cols-3 gap-6">
+                <!-- Three Animated Buttons – Hidden on Mobile -->
+                 <!-- Three Animated Buttons – Completely Hidden on Mobile (below 768px) -->
+<div class="hidden md:flex md:flex-row gap-6 justify-center w-full">
     <!-- Fixed Group Tours -->
-    <a href="#fixedToursGrid" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-600 to-pink-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+    <a href="#fixedToursGrid" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-600 to-pink-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex-1 max-w-xs">
         <div class="bg-white rounded-2xl p-5 text-center">
             <div class="text-4xl mb-3">✈️</div>
             <h3 class="text-lg font-bold text-[#181010]">Fixed Group Tours</h3>
@@ -119,7 +170,7 @@
     </a>
 
     <!-- Wish List -->
-    <a href="#wishCategoriesGrid" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+    <a href="#wishCategoriesGrid" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex-1 max-w-xs">
         <div class="bg-white rounded-2xl p-5 text-center">
             <div class="text-4xl mb-3">❤️</div>
             <h3 class="text-lg font-bold text-[#181010]">Wish List</h3>
@@ -128,7 +179,7 @@
     </a>
 
     <!-- Explore Packages -->
-    <a href="#packages" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 to-teal-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+    <a href="#packages" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 to-teal-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex-1 max-w-xs">
         <div class="bg-white rounded-2xl p-5 text-center">
             <div class="text-4xl mb-3">🎒</div>
             <h3 class="text-lg font-bold text-[#181010]">Explore Packages</h3>
@@ -340,11 +391,11 @@
 
 </div>
             <!-- Scrollable Cards -->
-            <div class="overflow-x-auto scrollbar-hide">
-                <div id="fixedToursGrid" class="flex gap-8 pb-4" style="min-width: max-content;">
-                    <!-- Dynamic cards inserted here by JS -->
-                </div>
-            </div>
+         <div class="overflow-x-auto scrollbar-hide bg-gradient-to-b from-blue-50 to-white">  <!-- ← Add this background here -->
+    <div id="fixedToursGrid" class="flex gap-8 pb-4" style="min-width: max-content;">
+        <!-- Cards -->
+    </div>
+</div>
         </div>
     </div>
 </section>
@@ -1354,6 +1405,21 @@ function loadWishCategories() {
             grid.innerHTML = '<p class="col-span-full text-center text-red-500 py-10">Error loading categories.</p>';
         });
 }
+
+// Hide header on scroll down, show on scroll up
+let lastScrollTop = 0;
+window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const header = document.querySelector('header');
+
+    if (scrollTop > lastScrollTop && scrollTop > 100) { // Scroll down + past 100px
+        header.classList.add('hidden');
+    } else {
+        header.classList.remove('hidden');
+    }
+
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For iOS bounce
+});
 </script>
 <!-- Booking Popup Modal -->
 <div id="bookingPopup" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 px-4">
