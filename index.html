@@ -76,38 +76,32 @@
 </header>
 
 <!-- Three Small Animated Buttons – Mobile Only, Between Header & Hero, One Horizontal Row -->
-<div class="block lg:hidden fixed top-20 left-0 right-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-md py-3">
-    <div class="flex gap-3 px-4 overflow-x-auto scrollbar-hide">
-        <!-- Fixed Group Tours -->
-        <a href="#fixedToursGrid" class="group relative overflow-hidden rounded-full bg-gradient-to-r from-red-600/90 to-pink-600/90 p-0.5 shadow hover:shadow-lg transition-all duration-300 hover:scale-105 flex-shrink-0 w-32">
-            <div class="bg-white rounded-full py-2 px-4 flex flex-col items-center justify-center h-full">
-                <div class="text-2xl mb-1">✈️</div>  <!-- Small icon -->
-                <h3 class="text-sm font-bold text-[#181010] text-center leading-tight">Fixed Tours</h3>
-                <span class="text-xs text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
-                    →
-                </span>
+<div class="block lg:hidden fixed top-[4.5rem] left-0 right-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm py-2 transition-transform duration-300" id="mobileQuickNav">
+    <div class="flex justify-center gap-3 px-4 overflow-x-auto scrollbar-hide">
+        <!-- Fixed Tours -->
+        <a href="#fixedToursGrid" onclick="hideMobileNavAndHeader()" class="group flex-shrink-0 w-28 relative overflow-hidden rounded-full bg-gradient-to-r from-red-600/90 to-pink-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105">
+            <div class="bg-white rounded-full py-2 px-3 flex flex-col items-center">
+                <div class="text-2xl mb-0.5">✈️</div>
+                <h3 class="text-xs font-bold text-[#181010] text-center leading-tight">Fixed Tours</h3>
+                <span class="text-[10px] text-primary font-medium group-hover:translate-x-1 transition-transform">→</span>
             </div>
         </a>
 
         <!-- Wish List -->
-        <a href="#wishCategoriesGrid" class="group relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600/90 to-purple-600/90 p-0.5 shadow hover:shadow-lg transition-all duration-300 hover:scale-105 flex-shrink-0 w-32">
-            <div class="bg-white rounded-full py-2 px-4 flex flex-col items-center justify-center h-full">
-                <div class="text-2xl mb-1">❤️</div>  <!-- Small icon -->
-                <h3 class="text-sm font-bold text-[#181010] text-center leading-tight">Wish List</h3>
-                <span class="text-xs text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
-                    →
-                </span>
+        <a href="#wishCategoriesGrid" onclick="hideMobileNavAndHeader()" class="group flex-shrink-0 w-28 relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600/90 to-purple-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105">
+            <div class="bg-white rounded-full py-2 px-3 flex flex-col items-center">
+                <div class="text-2xl mb-0.5">❤️</div>
+                <h3 class="text-xs font-bold text-[#181010] text-center leading-tight">Wish List</h3>
+                <span class="text-[10px] text-primary font-medium group-hover:translate-x-1 transition-transform">→</span>
             </div>
         </a>
 
-        <!-- Explore Packages -->
-        <a href="#packages" class="group relative overflow-hidden rounded-full bg-gradient-to-r from-green-600/90 to-teal-600/90 p-0.5 shadow hover:shadow-lg transition-all duration-300 hover:scale-105 flex-shrink-0 w-32">
-            <div class="bg-white rounded-full py-2 px-4 flex flex-col items-center justify-center h-full">
-                <div class="text-2xl mb-1">🎒</div>  <!-- Small icon -->
-                <h3 class="text-sm font-bold text-[#181010] text-center leading-tight">Packages</h3>
-                <span class="text-xs text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
-                    →
-                </span>
+        <!-- Packages -->
+        <a href="#packages" onclick="hideMobileNavAndHeader()" class="group flex-shrink-0 w-28 relative overflow-hidden rounded-full bg-gradient-to-r from-green-600/90 to-teal-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105">
+            <div class="bg-white rounded-full py-2 px-3 flex flex-col items-center">
+                <div class="text-2xl mb-0.5">🎒</div>
+                <h3 class="text-xs font-bold text-[#181010] text-center leading-tight">Packages</h3>
+                <span class="text-[10px] text-primary font-medium group-hover:translate-x-1 transition-transform">→</span>
             </div>
         </a>
     </div>
