@@ -54,6 +54,28 @@
     }
   }
 
+  
+  /* Force override for ALL primary buttons */
+  [class*="bg-primary"],
+  .bg-primary,
+  button.bg-primary,
+  a.bg-primary {
+    background-color: #0348AC !important;
+  }
+
+  /* Hover state override (darker shade of your blue) */
+  [class*="hover:bg-red-600"]:hover,
+  .hover\:bg-red-600:hover,
+  button.bg-primary:hover {
+    background-color: #023a8f !important;
+  }
+
+  /* Also fix text-primary if needed */
+  .text-primary {
+    color: #0348AC !important;
+  }
+
+
 </style>
 <!-- <body style="zoom: 90%; transform: scale(0.90); transform-origin: top center;"> </body> -->
 <body class="bg-background-light font-display text-[#181010] antialiased">
@@ -108,14 +130,13 @@
             </div>
         </a>
 
-        <!-- Wish List -->
-
-        <!-- Wish List – FORCED SMALLER SIZE (mobile + desktop) -->
-<a href="#wishCategoriesGrid" class="!w-20 flex-shrink-0 relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600/90 to-purple-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105 snap-center">
-    <div class="bg-white rounded-full !py-1 !px-2 flex flex-col items-center justify-center min-h-[70px]">
-        <div class="text-lg mb-0.5">❤️</div>           <!-- Even smaller icon -->
-        <h3 class="text-[10px] !font-bold text-[#181010] text-center leading-tight">Wish List</h3>  <!-- Smaller text -->
-        <span class="text-[8px] text-primary font-medium group-hover:translate-x-1 transition-transform">→</span>  <!-- Tiny arrow -->
+        
+        <!-- Fast Moving Package (renamed from Wish List) -->
+     <a href="#fastMovingPackages" onclick="loadFastMovingPackages(); return false;" class="group flex-shrink-0 w-32 relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600/90 to-purple-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105 snap-center">
+    <div class="bg-white rounded-full py-2 px-3 flex flex-col items-center">
+        <div class="text-2xl mb-0.5">❤️</div>  <!-- Icon unchanged -->
+        <h3 class="text-xs font-bold text-[#181010] text-center leading-tight">Fast Moving Package</h3>
+        <span class="text-[10px] text-primary font-medium group-hover:translate-x-1 transition-transform">→</span>
     </div>
 </a>
        
@@ -172,10 +193,6 @@
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">Wild Side.</span>
                 </h1>
 
-                
-
-                <!-- Three Buttons - Horizontal Line, Centered -->
-                <!-- Three Animated Buttons – Hidden on Mobile -->
                  <!-- Three Animated Buttons – Completely Hidden on Mobile (below 768px) -->
 <div class="hidden md:flex md:flex-row gap-6 justify-center w-full">
     <!-- Fixed Group Tours -->
@@ -187,14 +204,14 @@
         </div>
     </a>
 
-    <!-- Wish List -->
-    <a href="#wishCategoriesGrid" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex-1 max-w-xs">
-        <div class="bg-white rounded-2xl p-5 text-center">
-            <div class="text-4xl mb-3">❤️</div>
-            <h3 class="text-lg font-bold text-[#181010]">Wish List</h3>
-            <span class="inline-block mt-2 text-primary font-semibold text-sm group-hover:translate-x-2 transition">Discover →</span>
-        </div>
-    </a>
+        <!-- Desktop Fast Moving Button (in the three buttons row) -->
+        <a href="#" onclick="openFastMovingPopup(); return false;" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex-1 max-w-xs">
+            <div class="bg-white rounded-2xl p-5 text-center">
+                <div class="text-4xl mb-3">❤️</div>
+                <h3 class="text-lg font-bold text-[#181010]">Fast Moving Package</h3>
+                <span class="inline-block mt-2 text-primary font-semibold text-sm group-hover:translate-x-2 transition">Discover →</span>
+            </div>
+        </a>
 
     <!-- Explore Packages -->
     <a href="#packages" class="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-green-600 to-teal-600 p-1 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex-1 max-w-xs">
@@ -511,6 +528,29 @@
         </div>
     </div>
 
+
+<!-- Fast Moving Packages Popup -->
+<!-- Fast Moving Packages Popup -->
+<div id="fastMovingPopup" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-10 relative">
+        <!-- Close Button -->
+        <button onclick="document.getElementById('fastMovingPopup').classList.add('hidden')" 
+                class="absolute top-4 right-6 text-gray-600 hover:text-gray-900 text-4xl font-bold z-10">
+            ×
+        </button>
+
+        <h2 class="text-3xl md:text-4xl font-black text-center mb-8 text-[#181010]">
+            Fast Moving Packages
+        </h2>
+
+        <div id="fastMovingGridPopup" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <p class="col-span-full text-center text-gray-500 py-16 text-lg">Loading fast moving packages...</p>
+        </div>
+    </div>
+</div>
+
+
+
     <!-- Footer -->
     <footer class="bg-[#181010] text-white py-12">
         <div class="max-w-[1280px] mx-auto px-6 lg:px-10 text-center">
@@ -557,35 +597,76 @@ let pendingWhatsAppData = null; // Global for holding data after save
     }
 
     toursList.forEach(tour => {
-        const card = document.createElement('div');
-        card.className = 'w-80 bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col';
+    const card = document.createElement('div');
+    card.className = 'w-80 bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col';
+    
+    // ← ADD THIS LINE EXACTLY HERE
+    card.setAttribute('data-id', tour.id);
 
-        card.innerHTML = `
-            <div class="relative">
-                <img src="${tour.imageUrl || 'https://via.placeholder.com/400x250?text=No+Image'}" 
-                     alt="${tour.title}" 
-                     class="w-full h-64 object-cover">  <!-- Reduced from h-96 to h-64 (256px) -->
-            </div>
-            <div class="p-5 flex flex-col flex-grow">  <!-- Reduced padding from p-6 to p-5 -->
-                <h3 class="text-xl font-black text-[#181010] mb-2">${tour.title || 'Untitled Tour'}</h3>  <!-- Smaller title -->
-                <p class="text-base text-gray-700 mb-3">
-                    ${tour.duration || 'N/A'} • Starting <span class="text-primary font-bold">₹${tour.price || '0'}</span>
-                </p>
-                <p class="text-xs text-gray-600 mb-4">  <!-- Smaller text -->
-                    Departure: <span class="font-medium">${tour.departure || 'N/A'}</span> • 
-                    <span class="${tour.seatsLeft > 5 ? 'text-green-600' : 'text-red-600'} font-bold">${tour.seatsLeft || '0'} Seats Left</span>
-                </p>
-                <button onclick="openTourDetails('${tour.id}')" 
-                        class="mt-auto w-full bg-primary text-white py-3 rounded-full font-bold text-base hover:bg-red-600 transition shadow-lg">
-                    View Details
-                </button>
-            </div>
-        `;
+    card.innerHTML = `
+        <div class="relative">
+            <img src="${tour.imageUrl || 'https://via.placeholder.com/400x250?text=No+Image'}" 
+                 alt="${tour.title}" 
+                 class="w-full h-64 object-cover">
+        </div>
+        <div class="p-5 flex flex-col flex-grow">
+            <h3 class="text-xl font-black text-[#181010] mb-2">${tour.title || 'Untitled Tour'}</h3>
+            <p class="text-base text-gray-700 mb-3">
+                ${tour.duration || 'N/A'} • Starting <span class="text-primary font-bold">₹${tour.price || '0'}</span>
+            </p>
+            <p class="text-xs text-gray-600 mb-4">
+                Departure: <span class="font-medium">${tour.departure || 'N/A'}</span> • 
+                <span class="${tour.seatsLeft > 5 ? 'text-green-600' : 'text-red-600'} font-bold">${tour.seatsLeft || '0'} Seats Left</span>
+            </p>
+            <button onclick="openTourDetails('${tour.id}')" 
+                    class="mt-auto w-full bg-primary text-white py-3 rounded-full font-bold text-base hover:bg-red-600 transition shadow-lg">
+                View Details
+            </button>
+        </div>
+    `;
 
-        toursGrid.appendChild(card);
-    });
+    toursGrid.appendChild(card);
+});
 }
 
+// Temporary nice highlight effect on the target card
+// Temporary highlight effect with your custom color #0348AC
+function highlightCard(element) {
+    if (!element) return;
+
+    // Apply highlight with new color #0348AC
+    element.classList.add(
+        'ring-4',
+        'ring-offset-4',
+        'scale-105',
+        'bg-[#39b549]/5',           // ← very light tint of your color
+        'transition-all',
+        'duration-700'
+    );
+
+    // Set custom ring color (overrides any Tailwind primary)
+    element.style.setProperty('--tw-ring-color', '#39b549');
+    element.style.setProperty('--tw-ring-offset-color', '#ffffff'); // white offset looks clean
+
+    // Optional: Quick background flash using your color
+    element.style.backgroundColor = '#0348AC10'; // very transparent version
+    setTimeout(() => {
+        element.style.backgroundColor = '';
+    }, 1200);
+
+    // Remove highlight after 4 seconds
+    setTimeout(() => {
+        element.classList.remove(
+            'ring-4',
+            'ring-offset-4',
+            'scale-105',
+            'bg-[#0348AC]/5'
+        );
+        // Clean up custom properties
+        element.style.removeProperty('--tw-ring-color');
+        element.style.removeProperty('--tw-ring-offset-color');
+    }, 4000);
+}
     // Single global variable for the selected fixed tour
     let currentFixedTour = null;
 
@@ -712,7 +793,11 @@ function bookThisFixedTour() {
         packagesList.forEach(pkg => {
             const card = document.createElement('div');
             card.className = 'group h-[520px] w-full [perspective:1200px]';
-            card.dataset.package = pkg.dataPackage || pkg.id;
+
+            // ─── USE FIRESTORE DOC ID FOR CONSISTENCY ──────────────────────
+            const uniqueId = pkg.id;  // This is doc.id from Firestore — always unique & reliable
+            card.setAttribute('data-package', uniqueId);   // ← Change to this!
+            card.dataset.package = uniqueId;
 
             card.innerHTML = `
                 <div class="relative h-full w-full rounded-2xl shadow-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] bg-white">
@@ -1088,19 +1173,21 @@ function closeSuccessPopup() {
 function applyFilters() {
     let filtered = allPackages;
 
-    // Get active category from highlighted Wish card
+    // Find the currently highlighted (active) category card
     const activeCard = document.querySelector('.wish-category.ring-4.ring-primary');
     const activeCategory = activeCard ? activeCard.dataset.category : '';
 
-    // Get tag search term
-    const tagTerm = tagSearchInput ? tagSearchInput.value.trim().toLowerCase() : '';
-
-    // Apply category filter if selected
-    if (activeCategory !== '') {
-        filtered = filtered.filter(pkg => pkg.category === activeCategory);
+    // If "View All" is active (or no category selected) → show EVERYTHING
+    if (!activeCategory || activeCategory === '') {
+        renderPackages(allPackages);
+        return; // Early exit - no filtering needed
     }
 
-    // Apply tag filter if typed
+    // Otherwise apply category filter
+    filtered = filtered.filter(pkg => pkg.category === activeCategory);
+
+    // Apply tag search filter (if any text is entered)
+    const tagTerm = tagSearchInput ? tagSearchInput.value.trim().toLowerCase() : '';
     if (tagTerm !== '') {
         filtered = filtered.filter(pkg => {
             if (!pkg.tags || !Array.isArray(pkg.tags)) return false;
@@ -1110,6 +1197,7 @@ function applyFilters() {
 
     renderPackages(filtered);
 
+    // Show no-results message if empty
     if (filtered.length === 0) {
         document.getElementById('packagesGrid').innerHTML = 
             '<p class="col-span-full text-center text-gray-500 py-20 text-xl">No packages found for the selected filters.</p>';
@@ -1176,23 +1264,19 @@ function loadWishCategories() {
             grid.innerHTML = '';
 
   // === VIEW ALL CARD FIRST - Smaller & Compact ===
-// === VIEW ALL CARD FIRST - Smaller & Fixed Height ===
-// === VIEW ALL CARD FIRST - Premium Pill Style + Reduced Compact Size ===
 const viewAllCard = document.createElement('div');
-viewAllCard.className = 'wish-category cursor-pointer group relative overflow-hidden w-full max-w-[280px] mx-auto h-36 md:h-44 lg:h-48 transition-all duration-300 rounded-[2.5rem]'; // ← Pill shape + reduced size
+viewAllCard.className = 'wish-category cursor-pointer group relative overflow-hidden w-full max-w-[280px] mx-auto h-36 md:h-44 lg:h-48 transition-all duration-300 rounded-[2.5rem] border-4 border-green-500/80 shadow-xl';
 
 viewAllCard.innerHTML = `
-    <div class="w-full h-full flex flex-col items-center justify-center p-4 bg-white/90 backdrop-blur-sm rounded-[2.5rem] border-4 border-green-500/80 shadow-xl transition-all duration-300 group-hover:scale-105">
+    <div class="w-full h-full flex flex-col items-center justify-center p-4 bg-white/90 backdrop-blur-sm rounded-[2.5rem] transition-all duration-300 group-hover:scale-105">
         <!-- Large centered emoji (backpack) -->
         <div class="text-5xl mb-2">🎒</div>
-
         <!-- Bold main title -->
         <h3 class="text-xl md:text-2xl font-bold text-[#181010] text-center leading-tight mb-1">
             Explore Packages
         </h3>
-
         <!-- Small action text -->
-        <span class="text-sm text-primary font-medium group-hover:translate-x-1 transition-transform">
+        <span class="text-sm text-[#0348AC] font-medium group-hover:translate-x-1 transition-transform">
             View All →
         </span>
     </div>
@@ -1200,8 +1284,30 @@ viewAllCard.innerHTML = `
 
 // Click handler remains the same
 viewAllCard.addEventListener('click', () => {
-    document.querySelectorAll('.wish-category').forEach(el => el.classList.remove('ring-4', 'ring-primary'));
+    // Remove active highlight from ALL category cards
+    document.querySelectorAll('.wish-category').forEach(el => {
+        el.classList.remove('ring-4', 'ring-primary');
+    });
+
+    // Add highlight ONLY to this View All card
     viewAllCard.classList.add('ring-4', 'ring-primary');
+
+    // Clear any tag search input (prevents tag filter from hiding cards)
+    const tagInput = document.getElementById('tagSearch');
+    if (tagInput) {
+        tagInput.value = '';
+    }
+
+    // Force render ALL packages immediately (safest way)
+    renderPackages(allPackages);
+
+    // Optional: Smooth scroll to packages section so user sees the full list
+    document.getElementById('packages')?.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+    });
+
+    // Run applyFilters last (now it will detect no active category)
     applyFilters();
 });
 
@@ -1390,10 +1496,32 @@ function loadWishCategories() {
             `;
 
             viewAllCard.addEventListener('click', () => {
-                document.querySelectorAll('.wish-category').forEach(el => el.classList.remove('ring-4', 'ring-primary'));
-                viewAllCard.classList.add('ring-4', 'ring-primary');
-                applyFilters();
-            });
+    // Remove active highlight from ALL category cards
+    document.querySelectorAll('.wish-category').forEach(el => {
+        el.classList.remove('ring-4', 'ring-primary');
+    });
+
+    // Add highlight ONLY to this View All card
+    viewAllCard.classList.add('ring-4', 'ring-primary');
+
+    // Clear any tag search input (prevents tag filter from hiding cards)
+    const tagInput = document.getElementById('tagSearch');
+    if (tagInput) {
+        tagInput.value = '';
+    }
+
+    // Force render ALL packages immediately (safest way)
+    renderPackages(allPackages);
+
+    // Optional: Smooth scroll to packages section so user sees the full list
+    document.getElementById('packages')?.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+    });
+
+    // Run applyFilters last (now it will detect no active category)
+    applyFilters();
+});
 
             grid.appendChild(viewAllCard);
 
@@ -1482,6 +1610,218 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+// Open Fast Moving Packages Popup
+
+
+// Render fast moving items in the popup (compact card style)
+// Open Fast Moving Packages Popup
+
+
+// === DEBUG & Working Fast Moving Popup ===
+// Open Fast Moving Packages Popup
+// Open Fast Moving Packages Popup – shows BOTH regular packages + fixed group tours
+function openFastMovingPopup() {
+    console.log("Opening Fast Moving popup...");
+    const popup = document.getElementById('fastMovingPopup');
+    if (!popup) {
+        console.error("Popup element not found!");
+        return;
+    }
+    
+    popup.classList.remove('hidden');
+    popup.classList.add('flex');
+
+    const grid = document.getElementById('fastMovingGridPopup');
+    if (!grid) {
+        console.error("Grid #fastMovingGridPopup not found!");
+        return;
+    }
+
+    grid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-16 text-lg">Loading fast moving items...</p>';
+
+    let items = [];
+
+    // 1. Load Fast Moving Regular Packages
+    db.collection('packages')
+        .where('isFastMoving', '==', true)
+        .get()
+        .then(pkgSnap => {
+            console.log("Fast moving packages found:", pkgSnap.size);
+            pkgSnap.forEach(doc => {
+                const data = doc.data();
+                data.id = doc.id;
+                data.type = 'package';
+                items.push(data);
+            });
+
+            // 2. Load Fast Moving Fixed Group Tours
+            db.collection('fixedGroupTours')
+                .where('isFastMoving', '==', true)
+                .get()
+                .then(tourSnap => {
+                    console.log("Fast moving fixed tours found:", tourSnap.size);
+                    tourSnap.forEach(doc => {
+                        const data = doc.data();
+                        data.id = doc.id;
+                        data.type = 'fixed';
+                        items.push(data);
+                    });
+
+                    // Sort all items together by sortOrder
+                    items.sort((a, b) => (a.sortOrder || 9999) - (b.sortOrder || 9999));
+
+                    // Finally render everything
+                    renderFastMovingPopup(items);
+                })
+                .catch(err => {
+                    console.error("Error loading fixed tours:", err);
+                    grid.innerHTML = '<p class="col-span-full text-center text-red-500 py-16">Error loading fixed tours</p>';
+                });
+        })
+        .catch(err => {
+            console.error("Error loading packages:", err);
+            grid.innerHTML = '<p class="col-span-full text-center text-red-500 py-16">Error loading fast moving packages</p>';
+        });
+}
+
+// Render compact cards in popup
+function renderFastMovingPopup(items) {
+    const grid = document.getElementById('fastMovingGridPopup');
+    grid.innerHTML = '';
+
+    if (items.length === 0) {
+        grid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-16 text-xl">No fast moving items available right now.</p>';
+        return;
+    }
+
+    items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 relative';
+
+        // Detect type and prepare correct values
+        const isFixedTour = item.type === 'fixed';
+
+        const title = item.title || 'Untitled';
+        const price = item.price || '0';
+        const image = item.imageUrl || 'https://via.placeholder.com/400x250?text=No+Image';
+
+        // Description: Use appropriate field based on type
+        let description = '';
+        if (isFixedTour) {
+            description = item.smallDescription || item.bigDescription || item.description || 'No description available';
+        } else {
+            description = item.description || item.moreDetails || 'No description available';
+        }
+
+        // Duration / Special info
+        let durationInfo = isFixedTour 
+            ? (item.duration || 'N/A') + ' • Departure: ' + (item.departure || 'N/A')
+            : item.duration || 'N/A';
+
+        // Type badge
+        const typeBadge = isFixedTour 
+            ? '<span class="absolute top-3 left-3 bg-purple-600 text-white text-xs px-3 py-1 rounded-full font-medium z-10">Fixed Tour</span>'
+            : '<span class="absolute top-3 left-3 bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-medium z-10">Package</span>';
+
+        card.innerHTML = `
+            <div class="relative">
+                <img src="${image}" 
+                     alt="${title}" 
+                     class="w-full h-48 object-cover">
+                ${typeBadge}
+            </div>
+            <div class="p-5">
+                <h3 class="text-xl font-bold text-[#181010] mb-2">${title}</h3>
+                
+                <p class="text-primary font-bold text-lg mb-2">₹${price}</p>
+                
+                <p class="text-sm text-gray-600 mb-1">
+                    ${durationInfo}
+                </p>
+                
+                ${isFixedTour ? `
+                    <p class="text-sm text-red-600 font-medium mb-3">
+                        ${item.seatsLeft || 0} Seats Left
+                    </p>
+                ` : ''}
+
+                <p class="text-sm text-gray-600 mb-5 line-clamp-3">
+                    ${description.substring(0, 120)}${description.length > 120 ? '...' : ''}
+                </p>
+
+                <button onclick="bookFromFastPopup('${item.id}', '${item.type}')"
+        class="w-full bg-primary text-white py-3 rounded-xl font-bold hover:bg-red-600 transition">
+    More Details & Book
+</button>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// Close Fast Moving Popup
+function closeFastMovingPopup() {
+    document.getElementById('fastMovingPopup').classList.add('hidden');
+    document.getElementById('fastMovingPopup').classList.remove('flex');
+}
+
+// Book from Fast Moving Popup → Close popup + scroll to original card
+function bookFromFastPopup(itemId, itemType) {
+    // 1. Close popup
+    const fastPopup = document.getElementById('fastMovingPopup');
+    if (fastPopup) {
+        fastPopup.classList.add('hidden');
+        fastPopup.classList.remove('flex');
+    }
+
+    console.log(`[DEBUG] Book clicked - Item: ${itemType}, ID: "${itemId}"`);
+
+    let targetCard = null;
+
+    if (itemType === 'fixed') {
+        targetCard = document.querySelector(`#fixedToursGrid [data-id="${itemId}"]`);
+        console.log(`[DEBUG] Fixed selector: #fixedToursGrid [data-id="${itemId}"] → Found? ${!!targetCard}`);
+    } else {  // package
+        // Try both possible formats
+        targetCard = document.querySelector(`#packagesGrid [data-package="${itemId}"]`);
+        
+        if (!targetCard) {
+            // Fallback: try case-insensitive or trimmed match (rare edge case)
+            document.querySelectorAll('#packagesGrid [data-package]').forEach(card => {
+                const attrValue = card.getAttribute('data-package')?.trim();
+                if (attrValue === itemId || attrValue?.toLowerCase() === itemId.toLowerCase()) {
+                    targetCard = card;
+                }
+            });
+        }
+
+        console.log(`[DEBUG] Package selector: #packagesGrid [data-package="${itemId}"] → Found? ${!!targetCard}`);
+    }
+
+    // Fallback to section if card not found
+    if (!targetCard) {
+        console.warn(`[DEBUG] Specific card not found - falling back to section`);
+        targetCard = itemType === 'fixed' 
+            ? document.getElementById('fixedToursGrid')
+            : document.getElementById('packages');
+    }
+
+    // 3. Scroll & highlight
+    if (targetCard) {
+        targetCard.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+        });
+
+        setTimeout(() => {
+            highlightCard(targetCard);
+            console.log(`[DEBUG] Highlight applied to: ${targetCard.tagName} - data: ${targetCard.getAttribute('data-package') || targetCard.getAttribute('data-id') || 'section'}`);
+        }, 800);
+    } else {
+        console.error("[DEBUG] No target found at all!");
+    }
+}
+
 </script>
 <!-- Booking Popup Modal -->
 <div id="bookingPopup" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 px-4">
@@ -1550,7 +1890,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <textarea id="popupAdditionalInfo" rows="4" placeholder="Additional Information (e.g., special requests)" class="px-5 py-4 rounded-2xl bg-gray-100 focus:bg-white focus:border-primary transition-all resize-none"></textarea>
 
             <!-- Submit Button -->
-            <button type="submit" class="w-full h-16 bg-primary text-white rounded-full font-bold text-xl hover:bg-red-600 transition-all shadow-xl shadow-primary/20">
+            <button type="submit" class="w-full h-12 bg-[#0348AC] text-white rounded-full font-bold text-base hover:bg-[#0348AC] transition shadow-xl">
                 Submit Enquiry
             </button>
         </form>
