@@ -1167,16 +1167,17 @@ function loadWishCategories() {
             grid.innerHTML = '';
 
   // === VIEW ALL CARD FIRST - Smaller & Compact ===
+// === VIEW ALL CARD FIRST - Smaller & Fixed Height ===
+// === VIEW ALL CARD FIRST - Premium Pill Style + Reduced Compact Size ===
 const viewAllCard = document.createElement('div');
-viewAllCard.className = 'wish-category cursor-pointer group relative overflow-hidden rounded-xl shadow-md ring-2 ring-primary !w-64 max-w-[260px] mx-auto h-32 md:h-40 lg:h-44 transition-all duration-300';
-viewAllCard.setAttribute('data-category', '');
+viewAllCard.className = 'wish-category cursor-pointer group relative overflow-hidden w-full max-w-[280px] mx-auto h-36 md:h-44 lg:h-48 transition-all duration-300 rounded-[2.5rem]'; // ← Pill shape + reduced size
 
 viewAllCard.innerHTML = `
-    <div class="w-full h-36 md:h-40 lg:h-44 flex flex-col items-center justify-center p-4 bg-white/90 backdrop-blur-sm rounded-[2.5rem] border-4 border-green-500/80 shadow-lg transition-all duration-300 group-hover:scale-105">
-        <!-- Large centered emoji -->
-        <div class="text-6xl mb-2">🎒</div>  <!-- Big backpack, like your reference -->
+    <div class="w-full h-full flex flex-col items-center justify-center p-4 bg-white/90 backdrop-blur-sm rounded-[2.5rem] border-4 border-green-500/80 shadow-xl transition-all duration-300 group-hover:scale-105">
+        <!-- Large centered emoji (backpack) -->
+        <div class="text-5xl mb-2">🎒</div>
 
-        <!-- Main title - two lines, bold -->
+        <!-- Bold main title -->
         <h3 class="text-xl md:text-2xl font-bold text-[#181010] text-center leading-tight mb-1">
             Explore Packages
         </h3>
@@ -1188,6 +1189,7 @@ viewAllCard.innerHTML = `
     </div>
 `;
 
+// Click handler remains the same
 viewAllCard.addEventListener('click', () => {
     document.querySelectorAll('.wish-category').forEach(el => el.classList.remove('ring-4', 'ring-primary'));
     viewAllCard.classList.add('ring-4', 'ring-primary');
@@ -1196,22 +1198,24 @@ viewAllCard.addEventListener('click', () => {
 
 grid.appendChild(viewAllCard);
 
-            // === REGULAR CATEGORIES - Smaller ===
-            snapshot.forEach(doc => {
+// === REGULAR CATEGORIES - Match the same height ===
+snapshot.forEach(doc => {
     const cat = doc.data();
     const id = doc.id;
     const card = document.createElement('div');
-    card.className = 'wish-category cursor-pointer group relative overflow-hidden rounded-xl shadow-md w-full h-36 md:h-40 lg:h-44 transition-all duration-300'; // ← Overall card height reduced
+    card.className = 'wish-category cursor-pointer group relative overflow-hidden rounded-xl shadow-md w-full h-40 md:h-44 lg:h-48 transition-all duration-300';
     card.setAttribute('data-category', id);
 
     card.innerHTML = `
         <img src="${cat.imageUrl || 'https://via.placeholder.com/300x200?text=No+Image'}"
              alt="${cat.title}"
-             class="w-full h-full object-cover group-hover:scale-110 transition duration-500">  // ← h-full uses parent height (now smaller)
+             class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
         <div class="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition"></div>
-        <h3 class="absolute inset-x-0 bottom-2 text-center text-base md:text-lg font-black text-white px-2 leading-tight">
-            ${cat.title || id}
-        </h3>
+        <div class="absolute inset-0 flex flex-col items-center justify-center p-3 text-center">
+            <h3 class="text-lg md:text-xl font-black text-white leading-tight">
+                ${cat.title || id}
+            </h3>
+        </div>
     `;
 
     card.addEventListener('click', () => {
