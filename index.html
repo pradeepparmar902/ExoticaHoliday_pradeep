@@ -74,12 +74,11 @@
         </div>
     </div>
 </header>
-
-<!-- Three Small Animated Buttons – Mobile Only, Between Header & Hero, One Horizontal Row -->
-<div class="block lg:hidden fixed top-[4.5rem] left-0 right-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm py-2 transition-transform duration-300" id="mobileQuickNav">
-    <div class="flex justify-center gap-3 px-4 overflow-x-auto scrollbar-hide">
+<!-- Mobile-only Quick Nav Buttons: Centered Horizontal Row, Below Header -->
+<div id="mobileQuickNav" class="block lg:hidden fixed top-[4.5rem] left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-md py-3 transition-transform duration-300">
+    <div class="flex justify-center gap-3 px-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
         <!-- Fixed Tours -->
-        <a href="#fixedToursGrid" onclick="hideMobileNavAndHeader()" class="group flex-shrink-0 w-28 relative overflow-hidden rounded-full bg-gradient-to-r from-red-600/90 to-pink-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105">
+        <a href="#fixedToursGrid" class="group flex-shrink-0 w-32 relative overflow-hidden rounded-full bg-gradient-to-r from-red-600/90 to-pink-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105 snap-center">
             <div class="bg-white rounded-full py-2 px-3 flex flex-col items-center">
                 <div class="text-2xl mb-0.5">✈️</div>
                 <h3 class="text-xs font-bold text-[#181010] text-center leading-tight">Fixed Tours</h3>
@@ -88,7 +87,7 @@
         </a>
 
         <!-- Wish List -->
-        <a href="#wishCategoriesGrid" onclick="hideMobileNavAndHeader()" class="group flex-shrink-0 w-28 relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600/90 to-purple-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105">
+        <a href="#wishCategoriesGrid" class="group flex-shrink-0 w-32 relative overflow-hidden rounded-full bg-gradient-to-r from-blue-600/90 to-purple-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105 snap-center">
             <div class="bg-white rounded-full py-2 px-3 flex flex-col items-center">
                 <div class="text-2xl mb-0.5">❤️</div>
                 <h3 class="text-xs font-bold text-[#181010] text-center leading-tight">Wish List</h3>
@@ -97,7 +96,7 @@
         </a>
 
         <!-- Packages -->
-        <a href="#packages" onclick="hideMobileNavAndHeader()" class="group flex-shrink-0 w-28 relative overflow-hidden rounded-full bg-gradient-to-r from-green-600/90 to-teal-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105">
+        <a href="#packages" class="group flex-shrink-0 w-32 relative overflow-hidden rounded-full bg-gradient-to-r from-green-600/90 to-teal-600/90 p-0.5 shadow hover:shadow-md transition-all duration-300 hover:scale-105 snap-center">
             <div class="bg-white rounded-full py-2 px-3 flex flex-col items-center">
                 <div class="text-2xl mb-0.5">🎒</div>
                 <h3 class="text-xs font-bold text-[#181010] text-center leading-tight">Packages</h3>
@@ -1413,6 +1412,33 @@ window.addEventListener('scroll', () => {
     }
 
     lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For iOS bounce
+});
+
+// Mobile Quick Nav + Header Hide on Scroll Down / Click
+let lastScrollTop = 0;
+const mobileNav = document.getElementById('mobileQuickNav');
+const header = document.querySelector('header');
+
+window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop && scrollTop > 150) { // Scroll down + past 150px
+        if (mobileNav) mobileNav.classList.add('hidden');
+        if (header) header.classList.add('hidden');
+    } else {
+        if (mobileNav) mobileNav.classList.remove('hidden');
+        if (header) header.classList.remove('hidden');
+    }
+
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+});
+
+// Hide both on button click (smooth)
+document.querySelectorAll('#mobileQuickNav a').forEach(link => {
+    link.addEventListener('click', () => {
+        if (mobileNav) mobileNav.classList.add('hidden');
+        if (header) header.classList.add('hidden');
+    });
 });
 </script>
 <!-- Booking Popup Modal -->
