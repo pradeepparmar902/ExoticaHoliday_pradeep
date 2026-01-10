@@ -50,36 +50,43 @@
 <body class="bg-background-light font-display text-[#181010] antialiased">
 
     <!-- Navigation -->
-   <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-gray-200">    <!-- Your existing header content -->
+   <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 transition-all duration-300">
     <div class="max-w-[1280px] mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
-        <!-- Left: Logo + Company Name (Dynamic from Firebase) -->
+        <!-- Left: Logo + Company Name -->
         <a href="index.html" class="flex items-center gap-3">
             <img id="siteLogo" src="" alt="Company Logo" class="h-10 w-auto rounded-lg object-contain hidden">
             <h2 id="siteName" class="text-[#181010] text-xl font-bold tracking-tight">Exotica Holiday</h2>
         </a>
 
-        <!-- Center: Navigation Menu (Desktop only) -->
+        <!-- Desktop Menu (Visible only on lg+) -->
         <nav class="hidden lg:flex items-center gap-8">
             <a class="text-[#181010] hover:text-primary text-sm font-semibold transition-colors" href="index.html">Destinations</a>
             <a class="text-[#181010] hover:text-primary text-sm font-semibold transition-colors" href="#packages">Tours</a>
             <a class="text-[#181010] hover:text-primary text-sm font-semibold transition-colors" href="OtherServices.html">Other Services</a>
             <a class="text-[#181010] hover:text-primary text-sm font-semibold transition-colors" href="about.html">About</a>
             <a class="text-[#181010] hover:text-primary text-sm font-semibold transition-colors" href="Blog.html">Blog</a>
-            <a class="text-[#181010] hover:text-primary text-sm font-semibold transition-colors" href="contact.html">Contact</a>
-            <a class="text-[#181010] hover:text-primary text-sm font-semibold transition-colors" href="Review.html">Review</a>
+            <!-- Add more links if needed -->
         </nav>
 
-        <!-- Right: Log In & Sign Up Buttons -->
-        <div class="flex items-center gap-4">
-            <button class="hidden sm:flex items-center justify-center rounded-full h-10 px-6 text-[#181010] text-sm font-bold hover:bg-gray-100 transition-colors">
-                Log In
-            </button>
-            <button class="flex items-center justify-center rounded-full h-10 px-6 bg-primary text-white text-sm font-bold hover:bg-red-600 transition-colors shadow-lg shadow-primary/30">
-                Sign Up
-            </button>
+        <!-- Mobile Hamburger Icon (Right side, Visible only on mobile) -->
+        <button id="mobileMenuBtn" class="lg:hidden text-[#181010] text-2xl focus:outline-none">
+            ☰
+        </button>
+    </div>
+
+    <!-- Mobile Menu Dropdown (Hidden by default, appears on click) -->
+    <div id="mobileMenu" class="hidden lg:hidden fixed top-20 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg py-6 px-6 z-40 transition-all duration-300">
+        <div class="flex flex-col gap-6 text-center">
+            <a href="index.html" class="text-[#181010] hover:text-primary text-lg font-semibold transition-colors">Destinations</a>
+            <a href="#packages" class="text-[#181010] hover:text-primary text-lg font-semibold transition-colors">Tours</a>
+            <a href="OtherServices.html" class="text-[#181010] hover:text-primary text-lg font-semibold transition-colors">Other Services</a>
+            <a href="about.html" class="text-[#181010] hover:text-primary text-lg font-semibold transition-colors">About</a>
+            <a href="Blog.html" class="text-[#181010] hover:text-primary text-lg font-semibold transition-colors">Blog</a>
         </div>
     </div>
 </header>
+
+
 <!-- Mobile-only Quick Nav Buttons: Centered Horizontal Row, Below Header -->
 <div id="mobileQuickNav" class="block lg:hidden fixed top-[4.5rem] left-0 right-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-md py-2 transition-all duration-300">
     <div class="flex justify-center gap-3 px-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory">
