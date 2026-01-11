@@ -31,6 +31,38 @@
           },
         },
       }
+
+      // Show/hide upward arrow when scrolling in Packages section
+document.addEventListener('DOMContentLoaded', () => {
+    const scrollBtn = document.getElementById('scrollToTopBtn');
+    const packagesSection = document.getElementById('packages');
+
+    if (!scrollBtn || !packagesSection) return;
+
+    window.addEventListener('scroll', () => {
+        // Get the top position of Packages section relative to viewport
+        const sectionTop = packagesSection.getBoundingClientRect().top;
+        const scrollPosition = window.scrollY;
+
+        // Show button only if user has scrolled past the top of Packages section
+        if (sectionTop < 0) {  // Packages section is above viewport (scrolled down)
+            scrollBtn.classList.remove('opacity-0', 'invisible');
+            scrollBtn.classList.add('opacity-100', 'visible');
+        } else {
+            scrollBtn.classList.add('opacity-0', 'invisible');
+            scrollBtn.classList.remove('opacity-100', 'visible');
+        }
+    });
+
+    // Click → smooth scroll to top (hero section)
+    scrollBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
+
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -493,16 +525,18 @@
    <div class="flex justify-end">
     
     <button 
-    onclick="document.getElementById('fixedToursGrid').scrollIntoView({behavior: 'smooth'})"
-    class="group relative w-16 h-16 flex items-center justify-center rounded-full bg-gradient-to-br from-[#0348AC] to-[#023a8f] text-white shadow-lg hover:shadow-2xl hover:scale-110 transition-all duration-300">
-    <!-- Inner pulse effect -->
-    <span class="absolute inset-0 rounded-full bg-white/20 animate-ping"></span>
+    onclick="document.getElementById('packages').scrollIntoView({behavior: 'smooth', block: 'start'})"
+    class="group relative w-16 h-16 flex items-center justify-center rounded-full bg-[#0348AC]/80 backdrop-blur-sm border-2 border-[#0348AC]/50 text-white shadow-[0_0_20px_rgba(3,72,172,0.5)] hover:shadow-[0_0_30px_rgba(3,72,172,0.8)] hover:scale-110 transition-all duration-300">
+    <!-- Pulse effect -->
+    <span class="absolute inset-0 rounded-full bg-white/10 animate-pulse"></span>
     
-    <!-- Arrow + Text -->
-    <div class="relative z-10 flex flex-col items-center">
-        <span class="text-3xl font-bold animate-bounce">↓</span>
-        <span class="text-xs font-semibold mt-1 tracking-wide uppercase">More</span>
-    </div>
+    <!-- Arrow -->
+    <span class="text-4xl animate-bounce">↓</span>
+    
+    <!-- Label -->
+    <span class="absolute -bottom-10 text-xs font-semibold text-gray-700 group-hover:text-[#0348AC] transition-colors whitespace-nowrap">
+        More Packages ↓
+    </span>
 </button>
 
 
@@ -537,8 +571,13 @@
         </div>
     </div>
 
+    <!-- Upward Scroll Arrow - Appears only when scrolled down in Packages section -->
+<button id="scrollToTopBtn" 
+        class="fixed bottom-8 right-8 z-50 w-14 h-14 flex items-center justify-center rounded-full bg-[#0348AC] text-white shadow-lg hover:bg-[#023a8f] hover:scale-110 transition-all duration-300 opacity-0 invisible">
+    <span class="text-3xl animate-bounce">↑</span>
+</button>
 
-<!-- Fast Moving Packages Popup -->
+
 <!-- Fast Moving Packages Popup -->
 <div id="fastMovingPopup" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
     <div class="bg-white rounded-3xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-10 relative">
@@ -557,6 +596,7 @@
         </div>
     </div>
 </div>
+
 
 
 
