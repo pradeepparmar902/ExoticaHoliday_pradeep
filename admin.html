@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Exotica Holiday Admin - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    
+    <!-- Firebase SDKs - Moved inside <head> -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- XLSX Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #ff4d4d;
+            --accent: #ff6b35;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--light);
+            color: #222;
+            line-height: 1.6;
+            padding-top: 90px;
+        }
+
+        header {
+            background: var(--dark);
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            opacity: 0.95;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 36px 16px;
+        }
+
+        h1, h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .toggle-btn {
+            display: block;
+            margin: 1rem auto;
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .toggle-btn:hover {
+            background: #cc0000;
+            transform: translateY(-3px);
+        }
+
+        .section-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(16,24,40,0.06);
+            margin-bottom: 3rem;
+            display: none;
+        }
+
+        label {
+            display: block;
+            margin: 0.8rem 0 0.3rem;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="url"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="time"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        textarea { height: 120px; resize: vertical; }
+
+        button {
+            background: var(--primary);
+            color: white;
+            padding: 0.9rem 1.8rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-right: 0.5rem;
+        }
+
+        button:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        /* Remove fixed min-width and allow table to fit container */
+.table-container {
+    overflow-x: auto; /* Keep for mobile, but now rarely needed */
+    margin-bottom: 2rem;
+}
+
+table {
+    width: 100%; /* Use full available width */
+    min-width: 0; /* Remove the old min-width: 1400px */
+    table-layout: auto; /* Let columns adjust naturally */
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Reduce padding and font size for better fit */
+th, td {
+    padding: 0.8rem 0.6rem; /* Smaller padding */
+    font-size: 0.9rem; /* Slightly smaller text */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Make image smaller */
+.preview {
+    width: 80px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+/* Shorten long text columns */
+td:nth-child(8), /* Short Desc */
+td:nth-child(9)  /* More Details */ {
+    max-width: 150px;
+}
+
+/* Tags column */
+td:nth-child(11) {
+    max-width: 120px;
+}
+
+/* Actions column */
+.actions {
+    white-space: nowrap;
+}
+
+/* Optional: Make header text smaller and wrap if needed */
+th {
+    font-size: 0.85rem;
+    white-space: normal;
+    line-height: 1.3;
+}
+
+/* Responsive: On very small screens, allow minimal scroll but better than before */
+@media (max-width: 1200px) {
+    th, td {
+        padding: 0.6rem 0.4rem;
+        font-size: 0.85rem;
+    }
+    .preview {
+        width: 60px;
+        height: 40px;
+    }
+}
+
+        th {
+            background: var(--dark);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .edit-btn { background: #007bff; }
+        .delete-btn { background: var(--danger); }
+
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+
+        img.preview {
+            max-width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border: 1px solid #ddd;
+        }
+
+        .type-package { background: #e6f7ff; }
+        .type-car { background: #fff7e6; }
+        .type-cruise { background: #f0fff4; }
+        .type-visa { background: #fff0f6; }
+
+        .no-data {
+            text-align: center;
+            padding: 2rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .actions { flex-direction: column; }
+            button { width: 100%; margin-bottom: 0.5rem; }
+        }
+
+    table th, table td {
+    text-align: left;
+    vertical-align: middle;
+}
+
+.order-cell {
+    text-align: center;
+    font-weight: bold;
+    width: 80px;
+}
+
+.actions {
+    white-space: nowrap;
+}
+
+.sub-tab-btn {
+    padding: 0.9rem 1.6rem;
+    background: #e5e7eb;
+    color: #333;
+    border: none;
+    border-radius: 9999px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.sub-tab-btn.active,
+.sub-tab-btn:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255,77,77,0.3);
+}
+
+.sub-section {
+    transition: all 0.3s ease;
+}
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">Exotica Holiday Admin</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="car-booking.html">Car Booking</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+
+        <!-- Toggle Buttons -->
+         <button class="toggle-btn" id="managePackagesBtn">Manage Packages ▼</button>
+        <button class="toggle-btn" id="showBookingsBtn">Show Unified Customer Bookings</button>
+        <button class="toggle-btn" id="showBackdropBtn">Change Hero Backdrops</button>
+        <button class="toggle-btn" id="showHeaderBtn">Change Header & Logo</button>
+        <button class="toggle-btn" id="showFixedToursBtn">Manage Fixed Group Tours</button>
+        <button class="toggle-btn" id="showWishCategoriesBtn">Manage Wish List Categories</button>
+
+
+            <!-- Combined Packages Management Section -->
+<!-- Combined Packages Management Section -->
+<div class="section-container" id="packagesManagementContainer" style="display: none;">
+    <h2>Package Management</h2>
+
+    <!-- Sub-tabs -->
+    <div class="flex gap-4 mb-8 flex-wrap justify-center md:justify-start">
+        <button type="button" class="sub-tab-btn active" data-target="add-form">Add / Edit Package</button>
+        <button type="button" class="sub-tab-btn" data-target="import-section">Import from Excel</button>
+        <button type="button" class="sub-tab-btn" data-target="packages-list">View All Packages</button>
+    </div>
+
+    <!-- 1. Add / Edit Form -->
+    <div id="add-form" class="sub-section active">
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+            <h3 class="text-2xl font-bold mb-6" id="formTitle">Add New Package</h3>
+            
+            <form id="packageForm">
+                <input type="hidden" id="editIndex" value="-1">
+
+                <label for="title">Package Title</label>
+                <input type="text" id="title" required>
+
+                <label for="sortOrder">Display Order (lower = higher position)</label>
+                <input type="number" id="sortOrder" value="0" min="0">
+
+                <label for="price">Price (₹)</label>
+                <input type="number" id="price" required min="0">
+
+                <label for="oldPrice">Old Price (optional)</label>
+                <input type="number" id="oldPrice" min="0">
+
+                <label for="saleText">Sale Text</label>
+                <input type="text" id="saleText" value="SALE!">
+
+                <label for="location">Location</label>
+                <input type="text" id="location" required>
+
+                <label for="duration">Duration (e.g., 10D/9N)</label>
+                <input type="text" id="duration" required>
+
+                <label for="description">Short Description</label>
+                <textarea id="description" required></textarea>
+
+                <label for="moreDetails">More Details</label>
+                <textarea id="moreDetails" rows="6"></textarea>
+
+                <label for="category">Category</label>
+                <select id="category" required>
+                    <option value="">Select Category</option>
+                </select>
+
+                <label for="tags">Tags (comma separated)</label>
+                <input type="text" id="tags" placeholder="beach, family, adventure">
+
+                <label for="imageUrl">Image URL</label>
+                <input type="url" id="imageUrl" required>
+
+                <label for="dataPackage">Data Package Key (unique)</label>
+                <input type="text" id="dataPackage" required placeholder="kashmir-tour">
+
+                <div class="mt-4">
+                    <input type="checkbox" id="fastMovingTag" class="w-5 h-5">
+                    <label for="fastMovingTag">Mark as Fast Moving Package</label>
+                </div>
+
+                <div class="mt-6 flex gap-4">
+                    <button type="submit" class="btn">Save Package</button>
+                    <button type="button" id="cancelEdit" class="btn" style="display:none; background:#6c757d;">Cancel</button>
+                </div>
+            </form>
+
+            <div id="message" class="message mt-6" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- Import & Packages-list sections remain the same -->
+    <!-- ... your existing import-section and packages-list ... -->
+</div>
+
+
+        <!-- Wish List Categories Section - NOW WITH CORRECT CONTAINER -->
+<div class="section-container" id="wishCategoriesContainer" style="display: none;">
+    <h2 class="text-3xl font-bold text-center mb-8 text-primary">Manage Wish List Categories</h2>
+
+    <!-- Add/Edit Category Form -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+        <h3 class="text-2xl font-bold mb-6">Add / Edit Wish List Category</h3>
+        <form id="wishCategoryForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input type="hidden" id="wishCategoryId">
+
+            <div>
+                <label class="block text-sm font-bold mb-2">Category ID (Unique slug, e.g., europe-tours)</label>
+                <input type="text" id="wishCategoryIdInput" required class="w-full px-5 py-4 rounded-xl border border-gray-300 focus:border-primary focus:outline-none" placeholder="e.g., international" pattern="[a-z0-9\-]+" title="Lowercase letters, numbers, hyphens only">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">Title</label>
+                <input type="text" id="wishTitle" required class="w-full px-5 py-4 rounded-xl border border-gray-300 focus:border-primary focus:outline-none" placeholder="e.g., International">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">Image URL</label>
+                <input type="url" id="wishImageUrl" required class="w-full px-5 py-4 rounded-xl border border-gray-300 focus:border-primary focus:outline-none" placeholder="https://images.unsplash.com/...">
+            </div>
+
+            <div class="md:col-span-2 flex gap-4">
+                <button type="submit" class="flex-1 bg-primary text-white py-4 rounded-xl font-bold hover:bg-red-600 transition shadow-lg">
+                    Save Category
+                </button>
+                <button type="button" onclick="resetWishCategoryForm()" class="flex-1 bg-gray-300 text-gray-800 py-4 rounded-xl font-bold hover:bg-gray-400 transition">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Current Categories Table -->
+    <h3 class="text-xl font-bold mt-12 mb-6 text-[#181010]">Current Wish List Categories</h3>
+    <div class="overflow-x-auto">
+        <table class="w-full bg-white rounded-2xl shadow-lg border border-gray-200">
+            <thead class="bg-black text-white">
+                <tr>
+                    <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">ID</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Title</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Image Preview</th>
+                    <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="wishCategoriesTableBody" class="divide-y divide-gray-200">
+                <tr>
+                    <td colspan="4" class="px-6 py-10 text-center text-gray-500 italic">Loading categories...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+        <!-- Unified Customer Bookings Table -->
+        <div class="section-container" id="bookingsContainer">
+            <h2>Unified Customer Bookings</h2>
+            <div class="table-container">
+                <table id="unifiedBookingsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Type</th>
+                            <th>Name</th>
+                            <th>Persons</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Travel Date</th>
+                            <th>Additional Info</th>
+                            <th>Status</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody id="unifiedBookingsBody"></tbody>
+                </table>
+            </div>
+        </div>
+<!-- Hero Backdrop & Text Management -->
+<div class="section-container" id="backdropContainer">
+    <h2>Change Hero Backdrops & Text</h2>
+
+    <!-- Single Form for All Tabs -->
+    <div class="section">
+        <h3>Edit Hero Content</h3>
+        <label>Select Tab to Edit</label>
+        <select id="heroTabSelect">
+            <option value="package">Package</option>
+            <option value="car">Car</option>
+            <option value="cruise">Cruise</option>
+            <option value="visa">Visa</option>
+        </select>
+
+        <label style="margin-top: 1rem;">Upload Backdrop or Paste URL</label>
+        <input type="file" id="heroBackdropFile" accept="image/*">
+        <input type="url" id="heroBackdropUrl" placeholder="Or paste image URL (e.g., Unsplash)" style="margin-top: 1rem;">
+
+        <label>Sale Badge Text</label>
+        <input type="text" id="heroSaleBadge" placeholder="e.g., BIG SALE! Up to 30% OFF 🔥">
+
+        <label>Heading</label>
+        <input type="text" id="heroHeading" placeholder="e.g., Adventure Awaits! 🌍">
+
+        <label>Description</label>
+        <textarea id="heroDescription" placeholder="e.g., Group Tours • Backpacking..."></textarea>
+
+        <label>Button 1 Text & URL</label>
+        <input type="text" id="heroBtn1Text" placeholder="Button Text">
+        <input type="url" id="heroBtn1Url" placeholder="Button Link (e.g., #packages)">
+
+        <label>Button 2 Text & URL</label>
+        <input type="text" id="heroBtn2Text" placeholder="Button Text">
+        <input type="url" id="heroBtn2Url" placeholder="Button Link">
+
+        <div style="margin-top: 1rem;">
+            <button class="btn" id="saveHero">Save / Update</button>
+            <button class="btn delete-btn" id="deleteHero" style="background: var(--danger); margin-left: 1rem;">Delete Current Tab</button>
+        </div>
+        <img id="heroPreview" class="preview" src="" alt="Preview">
+        <div id="heroMessage" class="message"></div>
+    </div>
+
+    <!-- Existing Stored Hero Content Table -->
+    <div class="section">
+        <h3>Existing Hero Content</h3>
+        <table id="backdropsTable">
+            <thead>
+                <tr>
+                    <th>Tab</th>
+                    <th>Preview</th>
+                    <th>Sale Badge</th>
+                    <th>Heading</th>
+                    <th>Description</th>
+                    <th>Button 1</th>
+                    <th>Button 2</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="backdropsBody"></tbody>
+        </table>
+    </div>
+</div>
+<!-- Header Customization Container (hidden by default) -->
+<div class="section-container" id="headerCustomizationContainer" style="display: none;">
+    <h2>Header Customization</h2>
+    <div class="section">
+        <label>Company Name</label>
+        <input type="text" id="companyName" placeholder="e.g., Exotica Holiday" value="Exotica Holiday">
+
+        <label style="margin-top: 1rem;">Upload Logo (PNG, JPG, SVG recommended)</label>
+        <input type="file" id="logoFile" accept="image/*">
+
+        <label style="margin-top: 1rem;">Or Paste Logo URL</label>
+        <input type="url" id="logoUrl" placeholder="e.g., https://example.com/logo.png">
+
+        <div style="margin-top: 1rem;">
+            <button class="btn" id="saveHeader">Save / Update Header</button>
+        </div>
+
+        <div style="margin-top: 1.5rem;">
+            <h4>Preview</h4>
+            <div style="background: #1a1a1a; padding: 1rem; border-radius: 8px; display: flex; align-items: center; gap: 1rem;">
+                <img id="logoPreview" src="" alt="Logo Preview" style="height: 50px; display: none;">
+                <span id="namePreview" style="color: #ff4d4d; font-size: 1.8rem; font-weight: bold;">Exotica Holiday</span>
+            </div>
+        </div>
+
+        <div id="headerMessage" class="message"></div>
+    </div>
+</div>
+
+
+<!-- Fixed Group Tours Management -->
+<div class="section-container" id="fixedToursContainer" style="display: none;">
+    <h2>Manage Fixed Group Tours</h2>
+
+    <!-- Add / Edit Tour Form -->
+    <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+        <h3 class="text-2xl font-bold mb-6">Add / Edit Fixed Group Tour</h3>
+        <form id="fixedTourForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input type="hidden" id="fixedTourId">
+
+            <div>
+                <label class="block text-sm font-bold mb-2">Tour Title</label>
+                <input type="text" id="fixedTitle" required class="w-full px-5 py-4 rounded-xl border border-gray-300 focus:border-primary focus:outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">Image URL</label>
+                <input type="url" id="fixedImageUrl" required class="w-full px-5 py-4 rounded-xl border border-gray-300 focus:border-primary focus:outline-none" placeholder="https://images.unsplash.com/...">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">Duration</label>
+                <input type="text" id="fixedDuration" required class="w-full px-5 py-4 rounded-xl border border-gray-300 focus:border-primary focus:outline-none" placeholder="e.g., 7 Days">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">Price (₹)</label>
+                <input type="number" id="fixedPrice" required class="w-full px-5 py-4 rounded-xl border border-gray-300 focus:border-primary focus:outline-none">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">Departure Date</label>
+                <input type="text" id="fixedDeparture" required class="w-full px-5 py-4 rounded-xl border border-gray-300 focus:border-primary focus:outline-none" placeholder="e.g., 15 Feb 2026">
+            </div>
+
+             <!-- Hotel Type Options (Admin Configurable) -->
+            <div class="mb-6">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Hotel Type Options (comma separated)</label>
+                <textarea id="hotelTypeOptions" rows="3" placeholder="e.g. 3 Star,4 Star,5 Star,Deluxe,Luxury" class="px-4 py-3 rounded-xl border border-gray-300 w-full resize-none"></textarea>
+                <p class="text-xs text-gray-500 mt-1">These will appear in the dropdown on the main site</p>
+            </div>
+
+            <!-- Meal Type Options (Admin Configurable) -->
+            <div class="mb-6">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Meal Type Options (comma separated)</label>
+                <textarea id="mealTypeOptions" rows="3" placeholder="e.g. Breakfast Only,Breakfast & Dinner,All Meals Included,No Meals" class="px-4 py-3 rounded-xl border border-gray-300 w-full resize-none"></textarea>
+                <p class="text-xs text-gray-500 mt-1">These will appear in the dropdown on the main site</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mb-2">Seats Left</label>
+                <input type="number" id="fixedSeatsLeft" required class="w-full px-5 py-4 rounded-xl border border-gray-300 focus:border-primary focus:outline-none" min="0">
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Small Description (for card)</label>
+                <textarea id="smallDescription" name="smallDescription" rows="3" placeholder="Short summary shown on tour card (max 150 chars)" class="w-full px-4 py-3 rounded-xl border border-gray-300 resize-none"></textarea>
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Big Description (full details shown in popup)</label>
+                <textarea id="bigDescription" name="bigDescription" rows="6" placeholder="Full detailed description shown when user clicks View Details" class="w-full px-4 py-3 rounded-xl border border-gray-300 resize-none"></textarea>
+            </div>
+
+            <div class="md:col-span-2">
+                <label class="block text-sm font-bold mb-2">Sort Order (lower = appears first)</label>
+                <input type="number" id="fixedSortOrder" value="10" class="w-full px-5 py-4 rounded-xl border border-gray-300 focus:border-primary focus:outline-none">
+            </div>
+
+            <!-- Fast Moving Checkbox for Fixed Group Tours -->
+<div class="md:col-span-2 flex items-center gap-3 mt-6">
+    <input
+        type="checkbox"
+        id="fastMovingTourTag"
+        class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary cursor-pointer"
+    >
+    <label
+        for="fastMovingTourTag"
+        class="text-sm font-medium text-gray-700 cursor-pointer select-none"
+    >
+        Mark as Fast Moving Package (Show in Fast Moving section)
+    </label>
+</div>
+
+            <div class="md:col-span-2 flex gap-4">
+                <button type="submit" class="flex-1 bg-primary text-white py-4 rounded-xl font-bold hover:bg-red-600 transition shadow-lg">
+                    Save Tour
+                </button>
+                <button type="button" onclick="resetFixedTourForm()" class="flex-1 bg-gray-300 text-gray-800 py-4 rounded-xl font-bold hover:bg-gray-400 transition">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Current Tours List -->
+    <h3 class="text-xl font-bold mt-12 mb-6 text-[#181010]">Current Fixed Group Tours</h3>
+
+<div class="overflow-x-auto">
+    <table class="w-full bg-white rounded-2xl shadow-lg border border-gray-200">
+   <thead class="bg-black text-white">
+    <tr>
+        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Image</th>
+        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Tour Title</th>
+        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Duration</th>
+        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Price (₹)</th>
+        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Departure Date</th>
+        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Hotel Type</th>
+        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Meal Type</th>
+        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Seats Left</th>
+        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Small Description</th>
+        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Big Description</th>
+        <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider">Sort Order</th>
+        <th class="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider">Actions</th>
+    </tr>
+</thead>
+        <tbody id="fixedToursTableBody" class="divide-y divide-gray-200">
+            <!-- Rows will be inserted by JavaScript -->
+            <tr>
+                <td colspan="8" class="px-6 py-10 text-center text-gray-500 italic">Loading tours...</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+<!-- Add this button anywhere in the container, e.g. after the form -->
+<button type="button" id="debugCountBtn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition mt-6">
+    Show Current Category Count & List
+</button>
+<div id="debugOutput" class="mt-4 text-left text-gray-800 bg-gray-100 p-4 rounded-xl max-h-60 overflow-auto"></div>
+
+    </main>
+
+        
+    
+    <script>
+    // Firebase Config
+    const firebaseConfig = {
+        apiKey: "AIzaSyDdfXeJG76KTsVUIBuAdFQ_uejrImaPQaw",
+        authDomain: "exotica-hoidays.firebaseapp.com",
+        projectId: "exotica-hoidays",
+        storageBucket: "exotica-hoidays.firebasestorage.app",
+        messagingSenderId: "151952804646",
+        appId: "1:151952804646:web:8417305702390c9e538fe7",
+        measurementId: "G-X011TY1K5Y"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // ALL ELEMENTS DECLARED AT TOP (Critical Fix!)
+    const form = document.getElementById('packageForm');
+    const tableBody = document.getElementById('tableBody');
+    const messageDiv = document.getElementById('message');
+    const formTitle = document.getElementById('formTitle');
+    const editIndexInput = document.getElementById('editIndex');
+    const cancelBtn = document.getElementById('cancelEdit');
+    const formContainer = document.getElementById('formContainer');
+    const packagesContainer = document.getElementById('packagesContainer');
+    const bookingsContainer = document.getElementById('bookingsContainer');
+    // const backdropContainer = document.getElementById('backdropContainer');
+    const headerCustomizationContainer = document.getElementById('headerCustomizationContainer');
+    const showFormBtn = document.getElementById('showFormBtn');
+    const showPackagesBtn = document.getElementById('showPackagesBtn');
+    const showBookingsBtn = document.getElementById('showBookingsBtn');
+    const showBackdropBtn = document.getElementById('showBackdropBtn');
+    const showHeaderBtn = document.getElementById('showHeaderBtn');  
+   const showWishCategoriesBtn = document.getElementById('showWishCategoriesBtn');
+const wishCategoriesContainer = document.getElementById('wishCategoriesContainer');
+
+    const heroTabs = ['package', 'car', 'cruise', 'visa'];
+
+    // ── Single Manage Packages Toggle ───────────────────────────────
+const managePackagesBtn = document.getElementById('managePackagesBtn');
+const packagesManagementContainer = document.getElementById('packagesManagementContainer');
+
+if (managePackagesBtn && packagesManagementContainer) {
+    managePackagesBtn.addEventListener('click', () => {
+        const isHidden = packagesManagementContainer.style.display === 'none' || 
+                        packagesManagementContainer.style.display === '';
+        
+        packagesManagementContainer.style.display = isHidden ? 'block' : 'none';
+        managePackagesBtn.textContent = isHidden 
+            ? 'Hide Package Management ▲' 
+            : 'Manage Packages ▼';
+
+        if (isHidden) {
+            loadPackages();
+            showSubSection('add-form');
+        }
+    });
+}
+
+// ── Sub-tabs switching logic ────────────────────────────────────
+function showSubSection(targetId) {
+    document.querySelectorAll('.sub-tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.sub-section').forEach(sec => {
+        sec.style.display = 'none';
+        sec.classList.remove('active');
+    });
+
+    const activeBtn = document.querySelector(`.sub-tab-btn[data-target="${targetId}"]`);
+    const activeSection = document.getElementById(targetId);
+
+    if (activeBtn && activeSection) {
+        activeBtn.classList.add('active');
+        activeSection.style.display = 'block';
+        activeSection.classList.add('active');
+
+        if (targetId === 'packages-list') loadPackages();
+        if (targetId === 'import-section') {
+            // Optional: reset import UI
+            document.getElementById('excelFile')?.value = '';
+            document.getElementById('fileName')?.textContent = 'No file chosen';
+            document.getElementById('importBtn')?.style.display = 'none';
+        }
+    }
+}
+
+// Click handlers for sub-tabs
+document.querySelectorAll('.sub-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target');
+        showSubSection(targetId);
+    });
+});
+
+
+
+    if (showBookingsBtn && bookingsContainer) {
+        showBookingsBtn.addEventListener('click', () => {
+            bookingsContainer.style.display = bookingsContainer.style.display === 'block' ? 'none' : 'block';
+            showBookingsBtn.textContent = bookingsContainer.style.display === 'block' ? 'Hide Unified Bookings' : 'Show Unified Customer Bookings';
+            if (bookingsContainer.style.display === 'block') loadUnifiedBookings();
+        });
+    }
+
+    if (showBackdropBtn && backdropContainer) {
+        showBackdropBtn.addEventListener('click', () => {
+            backdropContainer.style.display = backdropContainer.style.display === 'block' ? 'none' : 'block';
+            showBackdropBtn.textContent = backdropContainer.style.display === 'block' ? 'Hide Change Hero Backdrops' : 'Change Hero Backdrops';
+            if (backdropContainer.style.display === 'block') {
+                loadHeroContent();
+                loadBackdropsTable();
+            }
+        });
+    }
+    
+// Toggle Import Excel Section
+const showImportBtn = document.getElementById('showImportBtn');
+const importContainer = document.getElementById('importContainer');
+
+
+// Import Elements
+const excelFileInput = document.getElementById('excelFile');
+const fileNameDisplay = document.getElementById('fileName');
+const importBtn = document.getElementById('importBtn');
+
+// Show file name and button
+if (excelFileInput && fileNameDisplay && importBtn) {
+    excelFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            fileNameDisplay.textContent = file.name;
+            importBtn.style.display = 'inline-block';
+        } else {
+            fileNameDisplay.textContent = 'No file chosen';
+            importBtn.style.display = 'none';
+        }
+    });
+}
+
+
+
+if (showWishCategoriesBtn && wishCategoriesContainer) {
+    showWishCategoriesBtn.addEventListener('click', () => {
+        const isHidden = wishCategoriesContainer.style.display === 'none' || wishCategoriesContainer.style.display === '';
+        
+        if (isHidden) {
+            wishCategoriesContainer.style.display = 'block';
+            showWishCategoriesBtn.textContent = 'Hide Wish List Categories';
+            loadWishCategories(); // Load data when opening
+        } else {
+            wishCategoriesContainer.style.display = 'none';
+            showWishCategoriesBtn.textContent = 'Manage Wish List Categories';
+        }
+    });
+}
+
+document.getElementById('debugCountBtn')?.addEventListener('click', async () => {
+    const output = document.getElementById('debugOutput');
+    output.innerHTML = 'Loading categories...';
+
+    try {
+        const snapshot = await db.collection('wishCategories').get();
+        const count = snapshot.size;
+        let list = '<strong>Total Categories: ' + count + '</strong><br><br>';
+
+        if (count === 0) {
+            list += 'No categories found in database.';
+        } else {
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                list += `ID: <strong>${doc.id}</strong> | Title: ${data.title || '(no title)'}<br>`;
+            });
+        }
+
+        output.innerHTML = list;
+    } catch (err) {
+        console.error(err);
+        output.innerHTML = 'Error: ' + err.message;
+    }
+});
+// Load Packages from Firebase - Sorted by sortOrder (lowest number = top)
+// Load Packages from Firebase - Sorted by sortOrder (lowest number = top)
+function loadPackages() {
+    tableBody.innerHTML = '<tr><td colspan="13" style="text-align:center; padding:2rem;">Loading packages...</td></tr>';
+
+    db.collection('packages').get()
+        .then(snapshot => {
+            tableBody.innerHTML = '';
+
+            if (snapshot.empty) {
+                tableBody.innerHTML = '<tr><td colspan="13" class="no-data">No packages found.</td></tr>';
+                return;
+            }
+
+            let packages = [];
+            snapshot.forEach(doc => {
+                const pkg = doc.data();
+                pkg.id = doc.id;
+                pkg.sortOrder = pkg.sortOrder !== undefined ? Number(pkg.sortOrder) : 9999;
+                packages.push(pkg);
+            });
+
+            // Sort by sortOrder (lowest number at top)
+            packages.sort((a, b) => a.sortOrder - b.sortOrder);
+
+            packages.forEach(pkg => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${pkg.imageUrl}" class="preview" alt="${pkg.title}"></td>
+                    <td><strong>${pkg.title}</strong></td>
+                    <td>₹${pkg.price}</td>
+                    <td>${pkg.oldPrice ? '₹' + pkg.oldPrice : '-'}</td>
+                    <td>${pkg.saleText || '-'}</td>
+                    <td>${pkg.location}</td>
+                    <td>${pkg.duration}</td>
+                    <td>${pkg.description.substring(0, 50)}${pkg.description.length > 50 ? '...' : ''}</td>
+                    <td>${pkg.moreDetails ? pkg.moreDetails.substring(0, 50) + '...' : '-'}</td>
+                    <td>${pkg.category || '-'}</td>
+                    <td>${pkg.tags ? pkg.tags.join(', ') : '-'}</td>
+                    <td class="order-cell">${pkg.sortOrder}</td>
+                    <td class="actions">
+                        <button class="btn edit-btn" onclick="editPackage('${pkg.id}')">Edit</button>
+                        <button class="btn delete-btn" onclick="deletePackage('${pkg.id}')">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(err => {
+            console.error("Error loading packages:", err);
+            tableBody.innerHTML = '<tr><td colspan="13" class="no-data">Error loading packages.</td></tr>';
+        });
+}
+
+// Main Import Function - Fixed with uppercase XLSX
+if (importBtn) {
+    importBtn.addEventListener('click', () => {
+        const file = excelFileInput.files[0];
+        if (!file) {
+            showMessage('Please select an Excel file first.', 'error');
+            return;
+        }
+
+        importBtn.disabled = true;
+        importBtn.textContent = 'Importing...';
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });  // ← Uppercase XLSX
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const rows = XLSX.utils.sheet_to_json(sheet);  // ← Uppercase XLSX
+
+                if (rows.length === 0) {
+                    showMessage('Excel file is empty.', 'error');
+                    resetImport();
+                    return;
+                }
+
+                let imported = 0;
+                let skipped = 0;
+                const total = rows.length;
+
+                const checkComplete = () => {
+                    if (imported + skipped === total) {
+                        const msg = imported === total
+                            ? `🎉 Success! All ${imported} packages imported successfully!`
+                            : `✅ Import complete! ${imported} package(s) imported, ${skipped} skipped.`;
+
+                        showMessage(msg, 'success');
+                        loadPackages(); // Refresh table
+                        resetImport();
+                    }
+                };
+
+                const resetImport = () => {
+                    importBtn.disabled = false;
+                    importBtn.textContent = 'Import Now';
+                    excelFileInput.value = '';
+                    fileNameDisplay.textContent = 'No file chosen';
+                    importBtn.style.display = 'none';
+                };
+
+                rows.forEach((row, index) => {
+                    const pkg = {
+                        title: String(row.Title || row.title || `Package ${index + 1}`).trim(),
+                        price: Number(row.Price || row.price || 0),
+                        oldPrice: row['Old Price'] || row.oldPrice || null,
+                        saleText: String(row['Sale Text'] || row.saleText || 'SALE!').trim(),
+                        location: String(row.Location || row.location || '').trim(),
+                        duration: String(row.Duration || row.duration || '').trim(),
+                        description: String(row.Description || row.description || '').trim(),
+                        moreDetails: String(row['More Details'] || row.moreDetails || '').trim(),
+                        category: String(row.Category || row.category || '').trim(),
+                        tags: String(row.Tags || row.tags || '').split(',').map(t => t.trim()).filter(t => t),
+                        imageUrl: String(row['Image URL'] || row.imageUrl || '').trim(),
+                        dataPackage: `import-${Date.now()}-${index}`  // Unique every time
+                    };
+
+                    // Validation
+                    if (!pkg.title || !pkg.price || !pkg.location || !pkg.duration || !pkg.imageUrl) {
+                        skipped++;
+                        checkComplete();
+                        return;
+                    }
+
+                    // Save to Firebase
+                    db.collection('packages').doc(pkg.dataPackage).set(pkg)
+                        .then(() => {
+                            imported++;
+                            checkComplete();
+                        })
+                        .catch((err) => {
+                            console.error('Import error:', err);
+                            skipped++;
+                            checkComplete();
+                        });
+                });
+
+            } catch (err) {
+                console.error('Excel read error:', err);
+                showMessage('Invalid Excel file format.', 'error');
+                importBtn.disabled = false;
+                importBtn.textContent = 'Import Now';
+            }
+        };
+        reader.readAsArrayBuffer(file);
+    });
+}
+
+
+
+// Helper function for success message (called when all rows processed)
+function showSuccessMessage(imported, skipped, total) {
+    const message = imported === total
+        ? `🎉 Success! All ${imported} packages imported successfully!`
+        : `✅ Import complete! ${imported} package(s) imported, ${skipped} skipped (missing required fields).`;
+
+    showMessage(message, 'success');
+    loadPackages(); // Refresh table
+
+    // Reset form
+    excelFileInput.value = '';
+    fileNameDisplay.textContent = 'No file chosen';
+    importBtn.style.display = 'none';
+}
+    
+    // Load Hero Content for selected tab
+    document.getElementById('heroTabSelect').addEventListener('change', loadHeroContent);
+
+   function loadHeroContent() {
+    const tab = document.getElementById('heroTabSelect').value;
+    db.collection('hero').doc(tab).get().then(doc => {
+        if (doc.exists) {
+                const data = doc.data();
+                document.getElementById('heroPreview').src = data.backdrop || '';
+                document.getElementById('heroSaleBadge').value = data.saleBadge || '';
+                document.getElementById('heroHeading').value = data.heading || '';
+                document.getElementById('heroDescription').value = data.description || '';
+                document.getElementById('heroBtn1Text').value = data.btn1Text || '';
+                document.getElementById('heroBtn1Url').value = data.btn1Url || '';
+                document.getElementById('heroBtn2Text').value = data.btn2Text || '';
+                document.getElementById('heroBtn2Url').value = data.btn2Url || '';
+            } else {
+                // Clear fields if no data
+                document.getElementById('heroPreview').src = '';
+                document.getElementById('heroSaleBadge').value = '';
+                document.getElementById('heroHeading').value = '';
+                document.getElementById('heroDescription').value = '';
+                document.getElementById('heroBtn1Text').value = '';
+                document.getElementById('heroBtn1Url').value = '';
+                document.getElementById('heroBtn2Text').value = '';
+                document.getElementById('heroBtn2Url').value = '';
+            }
+        });
+    }
+
+    // Save Hero Content
+    // Save current tab's content to Firebase
+document.getElementById('saveHero').addEventListener('click', () => {
+    const tab = document.getElementById('heroTabSelect').value;
+    const fileInput = document.getElementById('heroBackdropFile');
+    const urlInput = document.getElementById('heroBackdropUrl').value.trim();
+    const file = fileInput.files[0];
+
+    const heroData = {
+        saleBadge: document.getElementById('heroSaleBadge').value.trim(),
+        heading: document.getElementById('heroHeading').value.trim(),
+        description: document.getElementById('heroDescription').value.trim(),
+        btn1Text: document.getElementById('heroBtn1Text').value.trim(),
+        btn1Url: document.getElementById('heroBtn1Url').value.trim(),
+        btn2Text: document.getElementById('heroBtn2Text').value.trim(),
+        btn2Url: document.getElementById('heroBtn2Url').value.trim()
+    };
+
+    const saveToFirebase = (backdropUrl) => {
+        heroData.backdrop = backdropUrl || '';
+
+        db.collection('hero').doc(tab).set(heroData)
+            .then(() => {
+                showMessage(`${tab.charAt(0).toUpperCase() + tab.slice(1)} Hero updated in Firebase!`, 'success');
+                loadBackdropsTable();
+                document.getElementById('heroPreview').src = backdropUrl || '';
+            })
+            .catch((error) => {
+                console.error("Error saving hero:", error);
+                showMessage('Error saving to Firebase: ' + error.message, 'error');
+            });
+    };
+
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            saveToFirebase(e.target.result);
+        };
+        reader.readAsDataURL(file);
+    } else if (urlInput) {
+        saveToFirebase(urlInput);
+    } else {
+        saveToFirebase('');
+    }
+
+    // Clear inputs
+    fileInput.value = '';
+    urlInput.value = '';
+});
+
+    // Delete Hero Content
+    document.getElementById('deleteHero').addEventListener('click', () => {
+        const tab = document.getElementById('heroTabSelect').value;
+        if (confirm(`Delete ${tab.charAt(0).toUpperCase() + tab.slice(1)} hero content?`)) {
+            db.collection('hero').doc(tab).delete()
+                .then(() => {
+                    loadHeroContent();
+                    loadBackdropsTable();
+                    showMessage('Hero deleted!', 'success');
+                });
+        }
+    });
+
+    // Load Backdrops Table
+    function loadBackdropsTable() {
+        const tbody = document.getElementById('backdropsBody');
+        tbody.innerHTML = '';
+
+        heroTabs.forEach(tab => {
+            db.collection('hero').doc(tab).get().then(doc => {
+                const data = doc.exists ? doc.data() : {};
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${tab.charAt(0).toUpperCase() + tab.slice(1)}</td>
+                    <td>${data.backdrop ? `<img src="${data.backdrop}" style="max-width: 150px; height: 80px; object-fit: cover; border-radius: 6px;">` : 'No backdrop'}</td>
+                    <td>${data.saleBadge || '-'}</td>
+                    <td>${data.heading || '-'}</td>
+                    <td>${data.description ? data.description.substring(0, 50) + '...' : '-'}</td>
+                    <td>${data.btn1Text || '-'}</td>
+                    <td>${data.btn2Text || '-'}</td>
+                    <td><button class="btn delete-btn" onclick="deleteHeroContent('${tab}')">Delete</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+        });
+    }
+
+    // Load Packages from Firebase
+    
+
+    // Save/Edit Package
+    // Save/Edit Package – SAFER VERSION
+// Save/Edit Package – with Fast Moving checkbox support
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Get all values
+    const title = document.getElementById('title').value.trim();
+    const dataPackageInput = document.getElementById('dataPackage').value.trim().toLowerCase();
+
+    // Safe document ID (fallback if user leaves dataPackage empty)
+    let docId = dataPackageInput;
+    if (!docId || docId.length < 3) {
+        docId = title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+        if (!docId) docId = 'pkg-' + Date.now();
+    }
+
+    // ← NEW: Get checkbox value
+    const isFastMoving = document.getElementById('fastMovingTag').checked;
+
+    const pkg = {
+        title: title,
+        price: document.getElementById('price').value.trim(),
+        oldPrice: document.getElementById('oldPrice').value.trim() || null,
+        saleText: document.getElementById('saleText').value.trim(),
+        location: document.getElementById('location').value.trim(),
+        duration: document.getElementById('duration').value.trim(),
+        description: document.getElementById('description').value.trim(),
+        moreDetails: document.getElementById('moreDetails').value.trim(),
+        category: document.getElementById('category').value,
+        tags: document.getElementById('tags').value.split(',').map(t => t.trim()).filter(t => t),
+        imageUrl: document.getElementById('imageUrl').value.trim(),
+        dataPackage: docId,
+        sortOrder: Number(document.getElementById('sortOrder')?.value) || 0,
+        
+        // ── NEW FIELD ───────────────────────────────
+        isFastMoving: isFastMoving,           // true/false
+        
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    const editId = editIndexInput.value;
+
+    let promise;
+    if (editId && editId !== '-1') {
+        // Update existing document
+        promise = db.collection('packages').doc(editId).set(pkg, { merge: true });
+    } else {
+        // Create new document with our safe ID
+        promise = db.collection('packages').doc(docId).set(pkg);
+    }
+
+    promise
+        .then(() => {
+            showMessage(editId ? 'Package updated successfully!' : 'Package added successfully!', 'success');
+            form.reset();
+            // Reset checkbox too
+            document.getElementById('fastMovingTag').checked = false;
+            formTitle.textContent = 'Add New Package';
+            editIndexInput.value = '-1';
+            cancelBtn.style.display = 'none';
+            formContainer.style.display = 'none';
+            showFormBtn.textContent = '+ Add New Package';
+            loadPackages(); // Refresh table
+        })
+        .catch(error => {
+            console.error("Save failed:", error);
+            showMessage('Failed to save package: ' + error.message, 'error');
+        });
+});
+
+    // Edit Package
+    function editPackage(docId) {
+        db.collection('packages').doc(docId).get().then(doc => {
+            if (doc.exists) {
+                const pkg = doc.data();
+                document.getElementById('title').value = pkg.title;
+                document.getElementById('price').value = pkg.price;
+                document.getElementById('oldPrice').value = pkg.oldPrice || '';
+                document.getElementById('saleText').value = pkg.saleText || '';
+                document.getElementById('location').value = pkg.location;
+                document.getElementById('duration').value = pkg.duration;
+                document.getElementById('description').value = pkg.description;
+                document.getElementById('moreDetails').value = pkg.moreDetails || '';
+                document.getElementById('category').value = pkg.category || '';
+                document.getElementById('tags').value = pkg.tags ? pkg.tags.join(', ') : '';
+                document.getElementById('imageUrl').value = pkg.imageUrl;
+                document.getElementById('dataPackage').value = pkg.dataPackage;
+
+                formTitle.textContent = 'Edit Package';
+                editIndexInput.value = docId;
+                cancelBtn.style.display = 'inline-block';
+                formContainer.style.display = 'block';
+                showFormBtn.textContent = 'Hide Add Form';
+            }
+        });
+    }
+
+    // Delete Package
+    function deletePackage(docId) {
+        if (confirm('Delete this package?')) {
+            db.collection('packages').doc(docId).delete()
+                .then(() => {
+                    showMessage('Package deleted!', 'success');
+                    loadPackages();
+                });
+        }
+    }
+
+    // Cancel Edit
+    cancelBtn.addEventListener('click', () => {
+        form.reset();
+        formTitle.textContent = 'Add New Package';
+        editIndexInput.value = '-1';
+        cancelBtn.style.display = 'none';
+        formContainer.style.display = 'none';
+        showFormBtn.textContent = '+ Add New Package';
+    });
+
+    // Show Message
+   // Improved showMessage - Floating, stackable messages
+function showMessage(text, type = 'success') {
+    const msg = document.createElement('div');
+    msg.textContent = text;
+    msg.style.position = 'fixed';
+    msg.style.top = '20px';
+    msg.style.right = '20px';
+    msg.style.padding = '1rem 1.5rem';
+    msg.style.borderRadius = '8px';
+    msg.style.zIndex = '10000';
+    msg.style.fontWeight = 'bold';
+    msg.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+    msg.style.maxWidth = '350px';
+    msg.style.wordWrap = 'break-word';
+    msg.style.marginBottom = '10px';
+    msg.style.transition = 'opacity 0.5s';
+
+    if (type === 'success') {
+        msg.style.background = '#d4edda';
+        msg.style.color = '#155724';
+        msg.style.border = '1px solid #c3e6cb';
+    } else if (type === 'error') {
+        msg.style.background = '#f8d7da';
+        msg.style.color = '#721c24';
+        msg.style.border = '1px solid #f5c6cb';
+    }
+
+    document.body.appendChild(msg);
+
+    // Auto-remove after 6 seconds
+    setTimeout(() => {
+        msg.style.opacity = '0';
+        setTimeout(() => {
+            if (msg.parentNode) msg.parentNode.removeChild(msg);
+        }, 500);
+    }, 6000);
+}
+
+    // Load Unified Bookings
+    function loadUnifiedBookings() {
+        db.collection('bookings').orderBy('timestamp', 'desc').get().then(snapshot => {
+            unifiedBookingsBody.innerHTML = '';
+            if (snapshot.empty) {
+                unifiedBookingsBody.innerHTML = '<tr><td colspan="10" class="no-data">No bookings found.</td></tr>';
+                return;
+            }
+            snapshot.forEach(doc => {
+                const booking = doc.data();
+                const row = document.createElement('tr');
+                row.className = `type-${booking.type}`;
+                row.innerHTML = `
+                    <td>${booking.id}</td>
+                    <td>${booking.type.toUpperCase()}</td>
+                    <td>${booking.name || '-'}</td>
+                    <td>${booking.persons || '-'}</td>
+                    <td>${booking.phone || '-'}</td>
+                    <td>${booking.email || '-'}</td>
+                    <td>${booking.travelDate || '-'}</td>
+                    <td>${booking.additionalInfo ? booking.additionalInfo.substring(0, 50) + '...' : '-'}</td>
+                    <td>${booking.status}</td>
+                    <td><button class="btn details-btn" onclick="showUnifiedDetails('${booking.id}')">View</button></td>
+                `;
+                unifiedBookingsBody.appendChild(row);
+            });
+        });
+    }
+
+    function showUnifiedDetails(id) {
+        db.collection('bookings').doc(id).get().then(doc => {
+            if (doc.exists) {
+                const b = doc.data();
+                alert(`ID: ${b.id}\nType: ${b.type}\nName: ${b.name}\nPhone: ${b.phone}\nDetails: ${JSON.stringify(b, null, 2)}`);
+            }
+        });
+    }
+
+    // Header Customization
+    // Header Customization Toggle & Logic (Final Working Version)
+document.addEventListener('DOMContentLoaded', () => {
+    const showHeaderBtn = document.getElementById('showHeaderBtn');
+    const headerContainer = document.getElementById('headerCustomizationContainer');
+
+    if (!showHeaderBtn || !headerContainer) {
+        console.warn('Header elements not found!');
+        return;
+    }
+
+    headerContainer.style.display = 'none';
+
+    showHeaderBtn.addEventListener('click', () => {
+        if (headerContainer.style.display === 'none') {
+            headerContainer.style.display = 'block';
+            showHeaderBtn.textContent = 'Hide Header Customization';
+
+            // Load saved data
+          // Load header
+db.collection('settings').doc('header').get().then(doc => {
+    if (doc.exists) {
+        const data = doc.data();
+        if (data.companyName) document.getElementById('siteName').textContent = data.companyName;
+        if (data.companyLogo) {
+            const logo = document.getElementById('siteLogo');
+            logo.src = data.companyLogo;
+            logo.classList.remove('hidden');
+        }
+    }
+});
+        } else {
+            headerContainer.style.display = 'none';
+            showHeaderBtn.textContent = 'Change Header & Logo';
+        }
+    });
+
+    // Save button (Fixed)
+    document.getElementById('saveHeader').addEventListener('click', () => {
+        const name = document.getElementById('companyName').value.trim() || 'Exotica Holiday';
+        const fileInput = document.getElementById('logoFile');
+        const urlInput = document.getElementById('logoUrl').value.trim();
+        const file = fileInput.files && fileInput.files[0];
+
+        const updatePreviewAndSave = (logo) => {
+            document.getElementById('namePreview').textContent = name;
+            const logoPreview = document.getElementById('logoPreview');
+            if (logo) {
+                logoPreview.src = logo;
+                logoPreview.style.display = 'inline';
+            } else {
+                logoPreview.style.display = 'none';
+            }
+
+            db.collection('settings').doc('header').set({
+                companyName: name,
+                companyLogo: logo || null
+            }).then(() => {
+                alert('Header updated successfully! Refresh the main site to see changes.');
+            }).catch((error) => {
+                console.error("Error: ", error);
+                alert('Error saving header.');
+            });
+        };
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                updatePreviewAndSave(e.target.result);
+                fileInput.value = '';
+                document.getElementById('logoUrl').value = '';
+            };
+            reader.readAsDataURL(file);
+        } else if (urlInput) {
+            updatePreviewAndSave(urlInput);
+            fileInput.value = '';
+            document.getElementById('logoUrl').value = '';
+        } else {
+            updatePreviewAndSave('');
+            fileInput.value = '';
+            document.getElementById('logoUrl').value = '';
+        }
+    });
+});
+
+    // Initial load on page open
+    loadPackages();
+
+// Toggle Fixed Tours Section
+const showFixedToursBtn = document.getElementById('showFixedToursBtn');
+const fixedToursContainer = document.getElementById('fixedToursContainer');
+
+if (showFixedToursBtn && fixedToursContainer) {
+    showFixedToursBtn.addEventListener('click', () => {
+        const isVisible = fixedToursContainer.style.display === 'block';
+        fixedToursContainer.style.display = isVisible ? 'none' : 'block';
+        showFixedToursBtn.textContent = isVisible ? 'Manage Fixed Group Tours' : 'Hide Fixed Group Tours';
+        if (!isVisible) loadFixedTours();
+    });
+}
+
+// Load and display fixed tours
+function loadFixedTours() {
+    const tbody = document.getElementById('fixedToursTableBody');
+    tbody.innerHTML = '<tr><td colspan="12" class="px-6 py-10 text-center text-gray-500 italic">Loading tours...</td></tr>';
+
+    db.collection('fixedGroupTours')
+        .orderBy('sortOrder')
+        .get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                tbody.innerHTML = '<tr><td colspan="12" class="px-6 py-10 text-center text-gray-500 italic">No fixed group tours added yet.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = '';
+
+            snapshot.forEach(doc => {
+                const tour = doc.data();
+                tour.id = doc.id;
+
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition border-b';
+
+                row.innerHTML = `
+    <td class="px-4 py-4">
+        <img src="${tour.imageUrl || 'https://via.placeholder.com/100x70?text=No+Image'}" 
+             alt="${tour.title || 'No Title'}" 
+             class="preview" style="width:80px; height:50px; object-fit:cover; border-radius:6px;">
+    </td>
+    <td class="px-4 py-4">
+        <div class="font-semibold text-[#181010]">${tour.title || 'Untitled'}</div>
+    </td>
+    <td class="px-4 py-4 text-gray-700">${tour.duration || '-'}</td>
+    <td class="px-4 py-4 text-gray-700 font-bold">₹${tour.price || '0'}</td>
+    <td class="px-4 py-4 text-gray-700">${tour.departure || '-'}</td>
+    <td class="px-4 py-4 text-gray-700">${tour.hotelTypeOptions || '-'}</td>
+    <td class="px-4 py-4 text-gray-700">${tour.mealTypeOptions || '-'}</td>
+    <td class="px-4 py-4 text-center font-bold ${tour.seatsLeft > 0 ? 'text-green-600' : 'text-red-600'}">
+        ${tour.seatsLeft || '0'}
+    </td>
+    <td class="px-4 py-4 text-gray-600 max-w-xs">
+        ${(tour.smallDescription || '').substring(0, 100)}${(tour.smallDescription && tour.smallDescription.length > 100) ? '...' : ''}
+    </td>
+    <td class="px-4 py-4 text-gray-600 max-w-xs">
+        ${(tour.bigDescription || '').substring(0, 100)}${(tour.bigDescription && tour.bigDescription.length > 100) ? '...' : ''}
+    </td>
+    <td class="px-4 py-4 text-center text-gray-600">${tour.sortOrder || '9999'}</td>
+    <td class="px-4 py-4 text-center actions">
+        <button class="btn edit-btn" onclick="editFixedTour('${tour.id}')">Edit</button>
+        <button class="btn delete-btn" onclick="deleteFixedTour('${tour.id}')">Delete</button>
+    </td>
+`;
+
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => {
+            console.error("Error:", err);
+            tbody.innerHTML = '<tr><td colspan="12" class="px-6 py-10 text-center text-red-500">Error loading tours.</td></tr>';
+        });
+}
+
+// Save / Update Tour
+// Save / Update Tour - CORRECTED
+document.getElementById('fixedTourForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const tourId = document.getElementById('fixedTourId').value.trim();
+    const isFastMoving = document.getElementById('fastMovingTourTag').checked;
+
+    const tourData = {
+        title: document.getElementById('fixedTitle').value.trim(),
+        imageUrl: document.getElementById('fixedImageUrl').value.trim(),
+        duration: document.getElementById('fixedDuration').value.trim(),
+        price: Number(document.getElementById('fixedPrice').value) || 0,
+        departure: document.getElementById('fixedDeparture').value.trim(),
+        seatsLeft: Number(document.getElementById('fixedSeatsLeft').value) || 0,
+        smallDescription: document.getElementById('smallDescription').value.trim(),
+        bigDescription: document.getElementById('bigDescription').value.trim(),
+        sortOrder: Number(document.getElementById('fixedSortOrder').value) || 9999,
+
+        // Add missing fields that your table displays (set defaults if not in form)
+        oldPrice: null,              // or add input field later
+        saleText: "SALE!",           // or add input
+        location: "India",           // or add input
+        category: "International",   // or add input
+        tags: ["Group Tour", "Fixed Departure"],  // or add input
+
+        // Optional: Save dropdown options globally or per tour
+        hotelTypeOptions: document.getElementById('hotelTypeOptions').value.trim(),
+        mealTypeOptions: document.getElementById('mealTypeOptions').value.trim(),
+        isFastMoving : isFastMoving
+    };
+
+    let promise;
+    if (tourId) {
+        // Editing existing tour → fully replace (safe)
+        promise = db.collection('fixedGroupTours').doc(tourId).set(tourData);
+    } else {
+        // Adding new tour
+        promise = db.collection('fixedGroupTours').add(tourData);
+    }
+
+    promise
+        .then(() => {
+            showMessage(tourId ? 'Tour updated successfully!' : 'New tour added successfully!', 'success');
+            resetFixedTourForm();
+            loadFixedTours();
+        })
+        .catch(err => {
+            console.error('Error saving tour:', err);
+            showMessage('Error saving tour: ' + err.message, 'error');
+        });
+});
+
+// Save Dropdown Options Separately
+document.getElementById('saveDropdownOptions')?.addEventListener('click', () => {
+    const settingsData = {
+        hotelTypeOptions: document.getElementById('hotelTypeOptions').value.trim(),
+        mealTypeOptions: document.getElementById('mealTypeOptions').value.trim(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    db.collection('settings').doc('dropdownOptions').set(settingsData)
+        .then(() => {
+            document.getElementById('dropdownSaveMessage').textContent = 'Dropdown options saved successfully!';
+            document.getElementById('dropdownSaveMessage').style.color = 'green';
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('dropdownSaveMessage').textContent = 'Error saving options';
+            document.getElementById('dropdownSaveMessage').style.color = 'red';
+        });
+});
+
+
+// Edit
+function editFixedTour(id) {
+    db.collection('fixedGroupTours').doc(id).get()
+        .then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById('fixedTourId').value = id;
+                document.getElementById('fixedTitle').value = data.title || '';
+                document.getElementById('fixedImageUrl').value = data.imageUrl || '';
+                document.getElementById('fixedDuration').value = data.duration || '';
+                document.getElementById('fixedPrice').value = data.price || '';
+                document.getElementById('fixedDeparture').value = data.departure || '';
+                document.getElementById('fixedSeatsLeft').value = data.seatsLeft || '';
+                document.getElementById('fixedSortOrder').value = data.sortOrder || 9999;
+
+                // Fix: Use the actual field IDs from your form
+                document.getElementById('smallDescription').value = data.smallDescription || '';
+                document.getElementById('bigDescription').value = data.bigDescription || '';
+
+                // Optional: Also load dropdown options if you saved them
+                document.getElementById('hotelTypeOptions').value = data.hotelTypeOptions || '';
+                document.getElementById('mealTypeOptions').value = data.mealTypeOptions || '';
+                document.getElementById('fastMovingTourTag').checked = !!data.isFastMoving;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                alert('Tour not found!');
+            }
+        })
+        .catch(err => {
+            console.error('Error loading tour for edit:', err);
+            alert('Error loading tour details.');
+        });
+}
+
+// Delete
+function deleteFixedTour(id) {
+    if (confirm('Delete this tour?')) {
+        db.collection('fixedGroupTours').doc(id).delete()
+            .then(() => {
+                showMessage('Tour deleted!', 'success');
+                loadFixedTours();
+            });
+    }
+}
+
+// Reset form
+function resetFixedTourForm() {
+    document.getElementById('fixedTourForm').reset();
+    document.getElementById('fixedTourId').value = '';
+    document.querySelector('#fixedTourForm button[type="submit"]').textContent = 'Save Tour';
+}
+//#### Create Category Management for Wish List ####//
+
+// Load and display all wish categories dynamically
+
+
+// Save / Update Category (made async to properly check existence)
+// Save / Update Wish Category - FIXED VERSION
+
+
+document.getElementById('wishCategoryForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const hiddenId = document.getElementById('wishCategoryId').value.trim(); // Existing ID when editing
+    let categoryId = document.getElementById('wishCategoryIdInput').value.trim().toLowerCase();
+
+    // Validation for ID format
+    if (!/^[a-z0-9\-]+$/.test(categoryId)) {
+        showMessage('Invalid ID: Use only lowercase letters, numbers, and hyphens.', 'error');
+        return;
+    }
+
+    const title = document.getElementById('wishTitle').value.trim();
+    const imageUrl = document.getElementById('wishImageUrl').value.trim();
+
+    if (!title || !imageUrl) {
+        showMessage('Title and Image URL are required!', 'error');
+        return;
+    }
+
+    // When editing → use the original (hidden) ID, ignore any change in input
+    const finalId = hiddenId || categoryId;
+
+    // Only check existence when creating NEW category (no hiddenId)
+    if (!hiddenId) {
+        const existing = await db.collection('wishCategories').doc(finalId).get();
+        if (existing.exists) {
+            showMessage('This Category ID already exists! Choose a different one.', 'error');
+            return;
+        }
+    }
+
+    const categoryData = {
+        title: title,
+        imageUrl: imageUrl,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    // Use finalId (original when editing, new when creating)
+    db.collection('wishCategories').doc(finalId)
+        .set(categoryData, { merge: true })  // ← merge: true is safer for updates
+        .then(() => {
+            showMessage(hiddenId ? 'Category updated successfully!' : 'New category added!', 'success');
+            resetWishCategoryForm();
+            loadWishCategories();
+            refreshPackageCategoryDropdown();
+        })
+        .catch(err => {
+            console.error('Error saving category:', err);
+            showMessage('Error saving category: ' + err.message, 'error');
+        });
+});
+
+// Reset Form 
+function resetWishCategoryForm() {
+    document.getElementById('wishCategoryForm').reset();
+    document.getElementById('wishCategoryId').value = '';
+    document.getElementById('wishCategoryIdInput').value = '';
+    document.getElementById('wishCategoryIdInput').readOnly = false;
+    document.querySelector('#wishCategoryForm button[type="submit"]').textContent = 'Save Category';
+}
+
+// Edit Category
+function editWishCategory(id) {
+    db.collection('wishCategories').doc(id).get()
+        .then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById('wishCategoryId').value = id;
+                document.getElementById('wishCategoryIdInput').value = id;
+                document.getElementById('wishCategoryIdInput').readOnly = true;  // ← Lock ID field!
+                document.getElementById('wishTitle').value = data.title || '';
+                document.getElementById('wishImageUrl').value = data.imageUrl || '';
+                document.querySelector('#wishCategoryForm button[type="submit"]').textContent = 'Update Category';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        })
+        .catch(err => {
+            console.error('Error loading category:', err);
+            showMessage('Error loading category details.', 'error');
+        });
+}
+
+// Delete Category
+function deleteWishCategory(id, title = 'this category') {
+    if (confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) {
+        db.collection('wishCategories').doc(id).delete()
+            .then(() => {
+                showMessage('Category deleted successfully!', 'success');
+                loadWishCategories();
+            })
+            .catch(err => {
+                console.error(err);
+                showMessage('Error deleting category.', 'error');
+            });
+    }
+}
+
+// Reset form
+function resetWishCategoryForm() {
+    document.getElementById('wishCategoryForm').reset();
+    document.getElementById('wishCategoryId').value = '';
+    document.getElementById('wishCategoryIdInput').readOnly = false; // Allow new ID
+    document.querySelector('#wishCategoryForm button[type="submit"]').textContent = 'Save Category';
+}
+
+// Save / Update Category
+document.getElementById('wishCategoryForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const categoryId = document.getElementById('wishCategoryId').value.trim();
+    const categoryData = {
+        id: categoryId,
+        title: document.getElementById('wishTitle').value.trim(),
+        imageUrl: document.getElementById('wishImageUrl').value.trim()
+    };
+
+    db.collection('wishCategories').doc(categoryId).set(categoryData)
+        .then(() => {
+            showMessage(categoryId ? 'Category updated successfully!' : 'New category added successfully!', 'success');
+            resetWishCategoryForm();
+            loadWishCategories();
+        })
+        .catch(err => {
+            console.error('Error saving category:', err);
+            showMessage('Error saving category: ' + err.message, 'error');
+        });
+});
+
+// Edit Category
+function editWishCategory(id) {
+    db.collection('wishCategories').doc(id).get()
+        .then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById('wishCategoryId').value = id;
+                document.getElementById('wishCategoryIdInput').value = id;
+                document.getElementById('wishTitle').value = data.title || '';
+                document.getElementById('wishImageUrl').value = data.imageUrl || '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // Fallback for new/missing
+                const defaults = {
+                    international: { title: 'International', imageUrl: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                    india: { title: 'Domestic India', imageUrl: 'https://images.unsplash.com/photo-1524492410603-93e3e7a9d389?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                    hill: { title: 'Hill Station', imageUrl: 'https://images.unsplash.com/photo-1578327231330-25c7e29b7c09?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' },
+                    all: { title: 'View All', imageUrl: 'https://images.unsplash.com/photo-1495567107330-31e6f6b8d2e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }
+                };
+                const defaultData = defaults[id] || { title: id.charAt(0).toUpperCase() + id.slice(1), imageUrl: '' };
+                document.getElementById('wishCategoryId').value = id;
+                document.getElementById('wishCategoryIdInput').value = id;
+                document.getElementById('wishTitle').value = defaultData.title;
+                document.getElementById('wishImageUrl').value = defaultData.imageUrl;
+            }
+        })
+        .catch(err => {
+            console.error('Error loading category for edit:', err);
+            alert('Error loading category details.');
+        });
+}
+
+// Reset form
+function resetWishCategoryForm() {
+    document.getElementById('wishCategoryForm').reset();
+    document.getElementById('wishCategoryId').value = '';
+    document.querySelector('#wishCategoryForm button[type="submit"]').textContent = 'Save Category';
+}
+
+// Load Wish List Categories into the Package Form Category Dropdown
+function loadWishCategoriesIntoPackageDropdown() {
+    const categorySelect = document.getElementById('category');
+    if (!categorySelect) return;
+
+    // Keep the placeholder
+    categorySelect.innerHTML = '<option value="">Select Category</option>';
+
+    db.collection('wishCategories')
+        .orderBy('title')
+        .get()
+        .then(snapshot => {
+            if (snapshot.empty) {
+                categorySelect.innerHTML += '<option value="" disabled>No categories found</option>';
+                return;
+            }
+            snapshot.forEach(doc => {
+                const cat = doc.data();
+                const option = document.createElement('option');
+                option.value = doc.id; // Use document ID as value (slug)
+                option.textContent = cat.title || doc.id;
+                categorySelect.appendChild(option);
+            });
+        })
+        .catch(err => {
+            console.error("Error loading wish categories:", err);
+            categorySelect.innerHTML += '<option value="" disabled>Error loading categories</option>';
+        });
+}
+
+// Refresh dropdown after save/delete Wish Category
+function refreshPackageCategoryDropdown() {
+    loadWishCategoriesIntoPackageDropdown();
+}
+
+// Tag Search Functionality - Real-time filtering
+const tagSearchInput = document.getElementById('tagSearch');
+
+if (tagSearchInput) {
+    tagSearchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.trim().toLowerCase();
+
+        // If search is empty → show all packages
+        if (searchTerm === '') {
+            renderPackages(allPackages);
+            return;
+        }
+
+        // Filter packages that have a tag containing the search term (case-insensitive)
+        const filteredPackages = allPackages.filter(pkg => {
+            if (!pkg.tags || !Array.isArray(pkg.tags)) return false;
+            return pkg.tags.some(tag => tag.trim().toLowerCase().includes(searchTerm));
+        });
+
+        // Render filtered results
+        renderPackages(filteredPackages);
+
+        // If no results → show friendly message
+        if (filteredPackages.length === 0) {
+            document.getElementById('packagesGrid').innerHTML = 
+                `<p class="col-span-full text-center text-gray-500 py-20 text-xl">
+                    No packages found for tag: "<strong>${e.target.value}</strong>"
+                </p>`;
+        }
+    });
+}
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadWishCategoriesIntoPackageDropdown();
+});
+
+// Central function to apply both filters (Category + Tag Search)
+// Central function to apply BOTH filters (Category AND Tag Search)
+
+
+
+</script>
+
+
+
+</body>
+
+</html>
